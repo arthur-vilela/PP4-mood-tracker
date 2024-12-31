@@ -1,5 +1,6 @@
 asgiref==3.8.1
 crispy-bootstrap5==2024.10
+cryptography==44.0.0
 dj-database-url==2.3.0
 Django==5.1.4
 django-allauth==65.3.1
