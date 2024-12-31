@@ -1,1 +1,1 @@
-web: gunicorn pp4-mood-tracker.wsgi
+web: gunicorn moodtracker.wsgi
