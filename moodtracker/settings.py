@@ -56,7 +56,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',  # Social account suport
     'allauth.socialaccount.providers.google',  # Google login
     'allauth.socialaccount.providers.facebook',  # Facebook login
+    'dashboard',
     'mood',  # Custom app for mood tracking
+    'users',
 ]
 
 SITE_ID = 1
@@ -135,6 +137,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Account settings
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/

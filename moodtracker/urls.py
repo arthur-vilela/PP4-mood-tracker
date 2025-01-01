@@ -16,8 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('dashboard/', include('dashboard.urls')),  # Dashboard URLs
+    path('mood/', include('mood.urls')),  # Mood tracking URLs
+    path('', include('users.urls')),  # Root URLs handled by the users app
 ]
