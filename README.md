@@ -3,9 +3,55 @@
 ## Description
 A Django-based web application for tracking moods, allowing users to record their emotional state, actions, and analyze patterns over time.
 
+___
+
 ### ERD
 
 ![Diagram of database table relations](docs/moodtracker-erd.png)
+
+___
+
+## Models
+
+### Mood Model
+
+The Mood model represents user-submitted mood entries and includes fields to capture details about their emotional state on specific dates. This model allows users to document their feelings, actions taken, and additional notes for reflection or tracking purposes.
+
+#### Fields
+| Field | Description |
+|-------|-------------|
+| `user`| A foreign key linking the mood entry to a registered user.|
+|`date`| The date on which the mood was recorded.|
+|`mood_type`| A choice field representing predefined mood types (e.g., Happy, Sad, Angry).|
+|`note`| Optional text field for additional comments about the mood.|
+|`action`| Optional text field to document actions taken to manage the mood.|
+|`created_at`| The timestamp when the mood entry was created (automatically generated).|
+|`updated_at`| The timestamp when the mood entry was last updated (automatically generated).|
+
+#### Validation
+
+The `mood_type` field restricts entries to predefined choices to maintain data integrity.
+Admin Panel Features
+The model is registered in the Django admin panel with the following enhancements:
+Search Fields: user and note for quick lookup.
+Filter Options: mood_type and date for targeted filtering.
+Display Configuration: Shows user, date, mood_type, and created_at for each entry.
+
+#### Tests
+
+The tests ensure the correct functionality of the `Mood` model and its integration with the database. This includes validating field constraints, choice-based options, and timestamp generation.
+
+
+1. **Model Creation Test**:
+   - Created multiple mood entries for a test user to verify that all fields save and display correctly.
+   - Ensured `created_at` and `updated_at` timestamps were automatically generated.
+
+2. **Validation Test**:
+   - Confirmed that `mood_type` accepts only predefined choices and rejects invalid inputs.
+
+3. **Admin Panel Check**:
+   - Verified that the `Mood` model appears in the admin panel with filters, search, and display functionality as configured.
+
 
 ## Technologies Used
 
