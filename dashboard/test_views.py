@@ -42,13 +42,36 @@ class MoodChartViewTest(TestCase):
         self.assertEqual(response.status_code, 302)  # Redirect to login page
         self.assertIn("/accounts/login/", response.url)
 
-def test_mood_chart_view_with_invalid_mood_type(self):
-    # Create a mood entry with a valid-length but invalid mood type
-    invalid_mood = Mood.objects.create(user=self.user, date=date(2025, 1, 3), mood_type="Invalid")
-    
-    response = self.client.get(self.url)
-    self.assertEqual(response.status_code, 200)
+    def test_mood_chart_view_with_invalid_mood_type(self):
+        # Create a mood entry with a valid-length but invalid mood type
+        invalid_mood = Mood.objects.create(user=self.user, date=date(2025, 1, 3), mood_type="Invalid")
+        
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
 
-    mood_data = response.json()
-    # Ensure the invalid mood type is still included in the response
-    self.assertIn("Invalid", mood_data["data"])
+        mood_data = response.json()
+        # Ensure the invalid mood type is still included in the response
+        self.assertIn("Invalid", mood_data["data"])
+
+
+class MoodHistoryViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='password')
+        self.client.login(username='testuser', password='password')
+        Mood.objects.create(user=self.user, date=date(2025, 1, 1), mood_type="Happy")
+        Mood.objects.create(user=self.user, date=date(2025, 1, 2), mood_type="Sad")
+
+    def test_mood_history_view_status_code(self):
+        response = self.client.get(reverse('dashboard:mood_history'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_mood_history_view_template(self):
+        response = self.client.get(reverse('dashboard:mood_history'))
+        self.assertTemplateUsed(response, 'dashboard/mood_history.html')
+
+    def test_mood_history_view_content(self):
+        Mood.objects.create(user=self.user, date="2025-01-01", mood_type="Happy")
+        Mood.objects.create(user=self.user, date="2025-01-02", mood_type="Sad")
+        response = self.client.get(reverse('dashboard:mood_history'))
+        self.assertContains(response, "Happy")
+        self.assertContains(response, "Sad")
