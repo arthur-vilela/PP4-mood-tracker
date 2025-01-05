@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from mood.models import NotificationSettings
 from mood.models import Mood
 from datetime import date
 
@@ -75,3 +76,29 @@ class MoodHistoryViewTest(TestCase):
         response = self.client.get(reverse('dashboard:mood_history'))
         self.assertContains(response, "Happy")
         self.assertContains(response, "Sad")
+
+
+class NotificationSettingsViewTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username="testuser", password="password")
+        self.notification_settings_url = reverse("dashboard:notification_settings")
+        self.client.login(username="testuser", password="password")
+
+    def test_notification_settings_view_status_code(self):
+        response = self.client.get(self.notification_settings_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_notification_settings_view_template(self):
+        response = self.client.get(self.notification_settings_url)
+        self.assertTemplateUsed(response, "dashboard/notification_settings.html")
+
+    def test_notification_settings_update(self):
+        response = self.client.post(self.notification_settings_url, {
+            "notify_by_email": "on",
+            "notify_time": "08:00"
+        })
+        self.assertRedirects(response, self.notification_settings_url)
+
+        notification_settings = NotificationSettings.objects.get(user=self.user)
+        self.assertTrue(notification_settings.notify_by_email)
+        self.assertEqual(str(notification_settings.notify_time), "08:00:00")
