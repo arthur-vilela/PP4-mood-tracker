@@ -15,7 +15,7 @@ class Mood(models.Model):
         TIRED = "Tired", "Tired"
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField(default=now) # Allow explicit setting of the date
     mood_type = models.CharField(
         max_length=10, 
         choices=MoodChoices.choices, 
