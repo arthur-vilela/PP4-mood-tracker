@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Notification Settings</h1>
+
+<form method="post">
+    {% csrf_token %}
+    <label for="notify_by_email">
+        <input type="checkbox" id="notify_by_email" name="notify_by_email" 
+               {% if notification_settings.notify_by_email %}checked{% endif %}>
+        Notify by email
+    </label>
+    <br>
+    <label for="notify_time">Notification Time:</label>
+    <input type="time" id="notify_time" name="notify_time" 
+           value="{{ notification_settings.notify_time }}">
+    <br>
+    <button type="submit">Save</button>
+</form>
+{% endblock %}
