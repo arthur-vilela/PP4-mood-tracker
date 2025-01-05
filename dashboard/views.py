@@ -18,3 +18,10 @@ def mood_chart_view(request):
         "data": [mood.mood_type for mood in moods],
     }
     return JsonResponse(mood_data)
+
+
+@login_required
+def mood_history_view(request):
+    """View to display the user's mood history."""
+    moods = Mood.objects.filter(user=request.user).order_by('-date')  # Fetch moods in descending order of date
+    return render(request, 'dashboard/mood_history.html', {'moods': moods})
