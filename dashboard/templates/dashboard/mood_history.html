@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Mood History</h1>
+
+{% if moods %}
+<table>
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Mood</th>
+            <th>Note</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for mood in moods %}
+        <tr>
+            <td>{{ mood.date }}</td>
+            <td>{{ mood.mood_type }}</td>
+            <td>{{ mood.note|default:"-" }}</td>
+            <td>{{ mood.action|default:"-" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No mood entries found.</p>
+{% endif %}
+{% endblock %}
