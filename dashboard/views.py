@@ -7,9 +7,11 @@ from mood.models import NotificationSettings
 from mood.models import Mood
 
 # Create your views here.
-def dashboard_home(request):
-    return HttpResponse("Welcome to the Dashboard!")  # Temporary response for testing
-
+def dashboard_view(request):
+    """Render the dashboard with relevant user data."""
+    recent_moods = Mood.objects.filter(user=request.user).order_by('-date')[:5]
+    print(f"Recent moods for user {request.user}: {recent_moods}")
+    return render(request, 'dashboard/dashboard.html', {'moods': recent_moods})
 
 @login_required
 def mood_chart_view(request):
