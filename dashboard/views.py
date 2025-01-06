@@ -3,26 +3,50 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.utils.timezone import now
+from datetime import timedelta
+from collections import Counter
 from mood.models import NotificationSettings
 from mood.models import Mood
+import calendar
+
 
 # Create your views here.
+@login_required
 def dashboard_view(request):
-    """Render the dashboard with relevant user data."""
-    recent_moods = Mood.objects.filter(user=request.user).order_by('-date')[:5]
-    print(f"Recent moods for user {request.user}: {recent_moods}")
-    return render(request, 'dashboard/dashboard.html', {'moods': recent_moods})
+    # Get all moods for the logged-in user
+    moods = Mood.objects.filter(user=request.user).order_by('-date')
+
+    # Generate a list of unique months with mood entries
+    if moods.exists():
+        start_date = moods.last().date  # Earliest mood date
+        end_date = moods.first().date  # Latest mood date
+        months = [
+            start_date + timedelta(days=i * 30)
+            for i in range((end_date.year - start_date.year) * 12 + end_date.month - start_date.month + 1)
+        ]
+    else:
+        months = []
+
+    return render(request, "dashboard/dashboard.html", {"moods": moods, "months": months})
 
 @login_required
-def mood_chart_view(request):
-    """View to generate data for mood charts."""
-    moods = Mood.objects.filter(user=request.user).order_by('date')
-    mood_data = {
-        "labels": [mood.date.strftime('%Y-%m-%d') for mood in moods],
-        "data": [mood.mood_type for mood in moods],
-    }
-    return JsonResponse(mood_data)
+def mood_calendar_view(request):
+    """View to generate data for mood calendar."""
+    moods = Mood.objects.filter(user=request.user)
+    mood_by_date = {}
 
+    # Group moods by date
+    for mood in moods:
+        mood_by_date.setdefault(mood.date, []).append(mood.mood_type)
+
+    # Determine the most common mood per date
+    calendar_data = {
+        date.strftime('%Y-%m-%d'): Counter(mood_types).most_common(1)[0][0]
+        for date, mood_types in mood_by_date.items()
+    }
+
+    return JsonResponse(calendar_data)
 
 @login_required
 def mood_history_view(request):

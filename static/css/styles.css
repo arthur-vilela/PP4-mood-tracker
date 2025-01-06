@@ -1,0 +1,99 @@
+/* #moodCalendar {
+    overflow-x: auto;
+    max-width: 100%; 
+} */
+
+.calendar-month {
+    text-align: center;
+}
+
+.calendar-container {
+    text-align: center;
+}
+
+.calendar-div {
+    margin: 0 auto;
+    display: inline-block;
+}
+
+svg {
+    margin: 0 auto;
+    display: block;
+}
+
+
+.calendar-div {
+    display: flex;
+    justify-content: center; /* Center the SVG horizontally */
+    align-items: center; /* Center vertically if needed */
+}
+
+.calendar-div svg {
+    max-width: 100%; /* Make SVG responsive to parent */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Default horizontal legend */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* General rule for legend items */
+.legend-item {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 10px; /* Spacing between color box and text */
+    border-radius: 4px; /* give a rounded look */
+}
+
+/* Specific rules for each mood */
+.legend-item.happy {
+    background-color: #FFD700; /* Gold */
+}
+
+.legend-item.sad {
+    background-color: #FF4500; /* OrangeRed */
+}
+
+.legend-item.anxious {
+    background-color: #9370DB; /* MediumPurple */
+}
+
+.legend-item.angry {
+    background-color: #FF6347; /* Tomato */
+}
+
+.legend-item.calm {
+    background-color: #87CEFA; /* LightSkyBlue */
+}
+
+.legend-item.excited {
+    background-color: #32CD32; /* LimeGreen */
+}
+
+.legend-item.tired {
+    background-color: #A9A9A9; /* DarkGray */
+}
+
+/* Styling for the legend container */
+.legend {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    gap: 10px; /* Space between legend items */
+    justify-content: center; /* Center align on the page */
+    margin-top: 20px; /* Space above the legend */
+    text-align: center; /* Align text in the center */
+}
+
+
+/* Vertical legend for small screens */
+@media (max-width: 768px) {
+    .legend {
+        align-items: center;
+    }
+}

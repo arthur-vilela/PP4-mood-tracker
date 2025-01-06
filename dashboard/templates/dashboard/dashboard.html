@@ -9,16 +9,27 @@ Dashboard - Mood Tracker
     <h1 class="text-center">Welcome, {{ user.username }}!</h1>
     <p class="text-center">Here's an overview of your activity:</p>
 
-    <div class="row mt-4">
-        <!-- Mood Chart Section -->
-        <div class="col-md-6">
-            <h3 class="text-center">Mood Chart</h3>
-            <canvas id="moodChart" width="400" height="300"></canvas>
+    <div class="row mt-4 d-flex justify-content-center">
+        <h3 class="text-center">Mood Calendar</h3>
+        <!-- Loop through the months and create a div for each -->
+        {% for month in months %}
+        <div class="calendar-container my-4">
+            <h3 class="text-center">{{ month|date:"F Y" }}</h3>
+            <div id="calendar-{{ month|date:"Ym" }}" class="calendar-div"></div>
         </div>
-        <div>
-            <h3>Debugging Mood Data</h3>
-            <pre>{{ moods }}</pre>
+        {% endfor %}
+        <div class="calendar-wrapper container my-4">
+            <div class="legend d-flex flex-wrap justify-content-center">
+                <div class="legend-item happy"></div> Happy
+                <div class="legend-item sad"></div> Sad
+                <div class="legend-item anxious"></div> Anxious
+                <div class="legend-item angry"></div> Angry
+                <div class="legend-item calm"></div> Calm
+                <div class="legend-item excited"></div> Excited
+                <div class="legend-item tired"></div> Tired
+            </div>
         </div>
+    </div>
 
         <!-- Recent Mood Entries -->
         <div class="col-md-6">
@@ -39,33 +50,7 @@ Dashboard - Mood Tracker
     </div>
 </div>
 
-<!-- Mood Chart Script -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Fetch mood data for chart
-    fetch("{% url 'dashboard:mood_chart' %}")
-        .then(response => response.json())
-        .then(data => {
-            const ctx = document.getElementById('moodChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: data.labels,
-                    datasets: [{
-                        label: 'Mood Tracker',
-                        data: data.data,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 2,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: { beginAtZero: true }
-                    }
-                }
-            });
-        });
-</script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+
 {% endblock %}
