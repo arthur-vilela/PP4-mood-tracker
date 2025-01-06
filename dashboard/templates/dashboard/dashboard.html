@@ -7,8 +7,10 @@ Dashboard - Mood Tracker
 {% block content %}
 <div class="container my-4">
     <h1 class="text-center">Welcome, {{ user.username }}!</h1>
+    <div class="text-center my-4">
+        <a href="{% url 'mood:mood_entry' %}" class="btn btn-success">Add Mood Entry</a>
+    </div>    
     <p class="text-center">Here's an overview of your activity:</p>
-
     <div class="row mt-4 d-flex justify-content-center">
         <h3 class="text-center">Mood Calendar</h3>
         <!-- Loop through the months and create a div for each -->

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Mood Entry
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="text-center">Add a Mood Entry</h1>
+    <form method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary w-45">Cancel</a>
+    </form>
+</div>
+{% endblock %}

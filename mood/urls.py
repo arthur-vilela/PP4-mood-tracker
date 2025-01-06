@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = "mood"
+
 urlpatterns = [
-    path('', views.mood_home, name='mood_home'),  # Placeholder view for now
+    path("entry/", views.mood_entry_view, name="mood_entry"),
+    # Add other URLs here
 ]

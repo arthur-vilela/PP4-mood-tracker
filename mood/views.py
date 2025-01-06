@@ -1,6 +1,16 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .forms import MoodEntryForm
 
-# Create your views here.
-def mood_home(request):
-    return HttpResponse("Welcome to the Mood Tracker!")  # Temporary response for testing
+@login_required
+def mood_entry_view(request):
+    if request.method == "POST":
+        form = MoodEntryForm(request.POST)
+        if form.is_valid():
+            mood_entry = form.save(commit=False)
+            mood_entry.user = request.user
+            mood_entry.save()
+            return redirect("dashboard:dashboard_home")  # Redirect to the dashboard after submission
+    else:
+        form = MoodEntryForm()
+    return render(request, "mood/mood_entry.html", {"form": form})
