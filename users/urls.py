@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import landing_page
+from .views import logout_confirm_view
+
+app_name = "users"
 
 urlpatterns = [
-    path('', landing_page, name='landing_page'),  # Root URL serves the landing page
+    path("logout/", logout_confirm_view, name="logout_confirm"),
 ]

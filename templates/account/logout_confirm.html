@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Logout Confirmation{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1>Confirm Logout</h1>
+    <p>Successfully signed in as {{ user.username }}</p>
+    <p>Are you sure you want to logout?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Logout</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

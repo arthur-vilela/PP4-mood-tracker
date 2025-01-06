@@ -23,5 +23,6 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('dashboard/', include('dashboard.urls')),  # Dashboard URLs
     path('mood/', include('mood.urls')),  # Mood tracking URLs
+    path('users/', include('users.urls')),
     path('', lambda request: render(request, 'home.html'), name='home'),
 ]

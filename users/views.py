@@ -1,5 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 # Create your views here.
-def landing_page(request):
-    return render(request, 'users/landing_page.html')  # Replace with the actual template
+
+@login_required
+def logout_confirm_view(request):
+    if request.method == "POST":
+        logout(request)
+        return redirect("/")
+    return render(request, "account/logout_confirm.html")
