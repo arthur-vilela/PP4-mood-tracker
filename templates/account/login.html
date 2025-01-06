@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block content %}
+<div class="container text-center mt-5">
+    <h1>Sign In</h1>
+    <form method="post" action="{% url 'account_login' %}" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Sign In</button>
+        <a href="{% url 'account_signup' %}" class="btn btn-link">Sign Up</a>
+    </form>
+</div>
+{% endblock %}
