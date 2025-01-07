@@ -58,14 +58,15 @@ def mood_history_view(request):
 
 
 @login_required
-def notification_settings_view(request):
-    """View to display and update notification settings."""
+def settings_view(request):
+    """View to display and update user settings."""
     try:
         notification_settings = NotificationSettings.objects.get(user=request.user)
     except NotificationSettings.DoesNotExist:
         notification_settings = NotificationSettings.objects.create(user=request.user)
 
     if request.method == "POST":
+        # Update notification settings
         notify_by_email = request.POST.get("notify_by_email", "off") == "on"
         notify_time = request.POST.get("notify_time")
 
@@ -73,12 +74,17 @@ def notification_settings_view(request):
         notification_settings.notify_time = notify_time
         notification_settings.save()
 
-        messages.success(request, "Notification settings updated successfully.")
-        return redirect("dashboard:notification_settings")
+        # Update dark theme preference
+        dark_theme = request.POST.get("dark_theme", "off") == "on"
+        request.session['dark_theme'] = dark_theme
 
-    return render(request, "dashboard/notification_settings.html", {
-        "notification_settings": notification_settings
+        messages.success(request, "Settings updated successfully.")
+        return redirect("dashboard:settings")
+
+    return render(request, "dashboard/settings.html", {
+        "notification_settings": notification_settings,
     })
+
 
 
 @login_required
