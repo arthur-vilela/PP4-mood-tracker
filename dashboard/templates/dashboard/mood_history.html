@@ -1,30 +1,71 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+Mood History - Mood Tracker
+{% endblock %}
 
 {% block content %}
-<h1>Mood History</h1>
-
-{% if moods %}
-<table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Mood</th>
-            <th>Note</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container my-4">
+    <h1 class="text-center pb-3">Mood History</h1>
+    <div class="accordion" id="moodAccordion">
         {% for mood in moods %}
-        <tr>
-            <td>{{ mood.date }}</td>
-            <td>{{ mood.mood_type }}</td>
-            <td>{{ mood.note|default:"-" }}</td>
-            <td>{{ mood.action|default:"-" }}</td>
-        </tr>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{ mood.id }}">
+                <button class="accordion-button {% if forloop.first %}show{% else %}collapsed{% endif %}" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapse-{{ mood.id }}"
+                    aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                    aria-controls="collapse-{{ mood.id }}">
+                    <span class="me-3">{{ mood.date }}</span>
+                    <span class="badge {{ mood.mood_type|lower }} me-3">{{ mood.mood_type }}</span>
+                    {% if mood.note %}
+                    <span>{{ mood.note|slice:":25" }}...</span>
+                    {% endif %}
+                </button>
+            </h2>
+            <div id="collapse-{{ mood.id }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                aria-labelledby="heading-{{ mood.id }}" data-bs-parent="#moodAccordion">
+                <div class="accordion-body">
+                    <p><strong>Notes:</strong><em> {{ mood.note|default:"No notes" }}</em></p>
+                    <p><strong>Actions:</strong><em> {{ mood.action|default:"No actions" }}</em></p>
+                    <a href="{% url 'dashboard:edit_mood' mood.id %}" class="btn btn-primary">Edit</a>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                        data-id="{{ mood.id }}" data-date="{{ mood.date }}" data-mood="{{ mood.mood_type }}">
+                        Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center text-muted">No mood entries available.</p>
         {% endfor %}
-    </tbody>
-</table>
-{% else %}
-<p>No mood entries found.</p>
-{% endif %}
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete the mood entry for <span id="deleteModalDate"></span> (<span
+                    id="deleteModalMood"></span>)?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="post" action="#" id="deleteForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="mood_id" id="deleteMoodId">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <p>Debug Moods: {{ moods }}</p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/mood_history.js' %}"></script>
 {% endblock %}

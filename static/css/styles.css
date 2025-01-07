@@ -1,8 +1,4 @@
-/* #moodCalendar {
-    overflow-x: auto;
-    max-width: 100%; 
-} */
-
+/*----------------------- Dashboard ------------------ */
 .calendar-month {
     text-align: center;
 }
@@ -90,6 +86,16 @@ svg {
     text-align: center; /* Align text in the center */
 }
 
+/*----------------------- Mood History ------------------ */
+
+.badge.happy { background-color: #FFD700; }
+.badge.sad { background-color: #FF4500; }
+.badge.anxious { background-color: #9370DB; }
+.badge.angry { background-color: #FF6347; }
+.badge.calm { background-color: #87CEEB; }
+.badge.excited { background-color: #32CD32; }
+.badge.tired { background-color: #A9A9A9; }
+
 
 /* Vertical legend for small screens */
 @media (max-width: 768px) {
@@ -97,3 +103,4 @@ svg {
         align-items: center;
     }
 }
+

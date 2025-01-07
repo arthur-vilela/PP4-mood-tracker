@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -8,6 +8,7 @@ from datetime import timedelta
 from collections import Counter
 from mood.models import NotificationSettings
 from mood.models import Mood
+from .forms import MoodForm
 import calendar
 
 
@@ -52,6 +53,7 @@ def mood_calendar_view(request):
 def mood_history_view(request):
     """View to display the user's mood history."""
     moods = Mood.objects.filter(user=request.user).order_by('-date')  # Fetch moods in descending order of date
+    print("Debug: Moods QuerySet:", moods)  # Log the queryset
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
@@ -77,3 +79,26 @@ def notification_settings_view(request):
     return render(request, "dashboard/notification_settings.html", {
         "notification_settings": notification_settings
     })
+
+
+@login_required
+def edit_mood_view(request, pk):
+    mood = get_object_or_404(Mood, pk=pk, user=request.user)
+    if request.method == "POST":
+        form = MoodForm(request.POST, instance=mood)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Mood entry updated successfully.")
+            return redirect("dashboard:mood_history")
+    else:
+        form = MoodForm(instance=mood)
+    return render(request, "dashboard/edit_mood.html", {"form": form})
+    
+
+
+@login_required
+def delete_mood_view(request, pk):
+    mood = get_object_or_404(Mood, pk=pk, user=request.user)
+    mood.delete()
+    messages.success(request, "Mood entry deleted successfully.")
+    return redirect("dashboard:mood_history")
