@@ -129,7 +129,7 @@ svg {
     width: 20px;
     height: 20px;
     display: inline-block;
-    margin-right: 10px; /* Spacing between color box and text */
+    margin-left: 15px;
     border-radius: 4px; /* give a rounded look */
 }
 
@@ -166,7 +166,7 @@ svg {
 .legend {
     display: flex;
     flex-wrap: wrap; /* Allow wrapping for smaller screens */
-    gap: 10px; /* Space between legend items */
+    gap: 5px; /* Space between legend items */
     justify-content: center; /* Center align on the page */
     margin-top: 20px; /* Space above the legend */
     text-align: center; /* Align text in the center */
@@ -184,7 +184,6 @@ svg {
 /* Vertical legend for small screens */
 @media (max-width: 768px) {
     .legend {
-        flex-direction: column;
         align-items: center;
     }
 }
