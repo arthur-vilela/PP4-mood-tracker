@@ -1,7 +1,8 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="{% if user.preferences.dark_mode_enabled %}dark-theme{% endif %}">
+
 
 <head>
     <meta charset="UTF-8">
@@ -15,9 +16,9 @@
     <script src="{% static 'js/mood_calendar.js' %}"></script>
 </head>
 
-<body>
+<body class="{% if request.user.is_authenticated and request.user.profile.dark_theme %}dark-theme{% endif %}">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg {% if request.session.dark_theme %}navbar-dark bg-dark{% else %}navbar-light bg-light{% endif %}">
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">Mood Tracker</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,13 +53,14 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav>        
     </header>
     
     <main class="container my-4">
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
-    <footer class="bg-light text-center py-3">
+    <footer class="text-center py-3 {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
         <p class="mb-0">&copy; 2025 Mood Tracker</p>
     </footer>
     <!-- Bootstrap Bundle JS -->

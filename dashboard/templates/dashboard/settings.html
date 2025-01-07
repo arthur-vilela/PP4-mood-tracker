@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container my-4">
     <h1 class="text-center mb-4">User Settings</h1>
+    <p>Debug: Dark Theme is {% if request.session.dark_theme %}enabled{% else %}disabled{% endif %}</p>
 
     <!-- Success Message -->
     {% if messages %}
@@ -24,7 +25,7 @@
         </div>
     {% endif %}
 
-    <form method="post" class="p-4 border rounded shadow-sm bg-light">
+    <form method="post" class="p-4 border rounded shadow-sm {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
         {% csrf_token %}
 
         <!-- Notification Settings -->

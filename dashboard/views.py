@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from datetime import timedelta
 from collections import Counter
-from mood.models import NotificationSettings
 from mood.models import Mood
+from mood.models import NotificationSettings
+from mood.models import UserPreferences
 from .forms import MoodForm
 import calendar
 
@@ -57,11 +58,6 @@ def mood_history_view(request):
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
-from django.contrib import messages
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from mood.models import NotificationSettings
-
 @login_required
 def settings_view(request):
     """View to manage user settings."""
@@ -69,6 +65,9 @@ def settings_view(request):
         notification_settings = NotificationSettings.objects.get(user=request.user)
     except NotificationSettings.DoesNotExist:
         notification_settings = NotificationSettings.objects.create(user=request.user)
+
+    # Fetch user preferences
+    preferences, created = UserPreferences.objects.get_or_create(user=request.user)
 
     if request.method == "POST":
         notify_by_email = request.POST.get("notify_by_email", "off") == "on"
@@ -83,14 +82,21 @@ def settings_view(request):
             notification_settings.notify_time = notify_time if notify_time else None
             notification_settings.save()
 
-            # Save dark theme preference in session
-            request.session["dark_theme"] = dark_theme
+            # Save dark theme preference in the database and session
+            preferences.dark_mode_enabled = dark_theme
+            preferences.save()
+            request.session["dark_theme"] = dark_theme  # Update session value
+
             messages.success(request, "Settings updated successfully.")
             return redirect("dashboard:settings")
 
     return render(request, "dashboard/settings.html", {
-        "notification_settings": notification_settings
+        "notification_settings": notification_settings,
+        "preferences": preferences,
     })
+
+
+
 
 
 
