@@ -57,33 +57,41 @@ def mood_history_view(request):
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from mood.models import NotificationSettings
+
 @login_required
 def settings_view(request):
-    """View to display and update user settings."""
+    """View to manage user settings."""
     try:
         notification_settings = NotificationSettings.objects.get(user=request.user)
     except NotificationSettings.DoesNotExist:
         notification_settings = NotificationSettings.objects.create(user=request.user)
 
     if request.method == "POST":
-        # Update notification settings
         notify_by_email = request.POST.get("notify_by_email", "off") == "on"
         notify_time = request.POST.get("notify_time")
-
-        notification_settings.notify_by_email = notify_by_email
-        notification_settings.notify_time = notify_time
-        notification_settings.save()
-
-        # Update dark theme preference
         dark_theme = request.POST.get("dark_theme", "off") == "on"
-        request.session['dark_theme'] = dark_theme
 
-        messages.success(request, "Settings updated successfully.")
-        return redirect("dashboard:settings")
+        # Validate time if email notifications are enabled
+        if notify_by_email and not notify_time:
+            messages.error(request, "Please provide a valid notification time.")
+        else:
+            notification_settings.notify_by_email = notify_by_email
+            notification_settings.notify_time = notify_time if notify_time else None
+            notification_settings.save()
+
+            # Save dark theme preference in session
+            request.session["dark_theme"] = dark_theme
+            messages.success(request, "Settings updated successfully.")
+            return redirect("dashboard:settings")
 
     return render(request, "dashboard/settings.html", {
-        "notification_settings": notification_settings,
+        "notification_settings": notification_settings
     })
+
 
 
 

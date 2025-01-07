@@ -4,6 +4,26 @@
 <div class="container my-4">
     <h1 class="text-center mb-4">User Settings</h1>
 
+    <!-- Success Message -->
+    {% if messages %}
+        <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+                {{ message }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Error Message -->
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <ul>
+                {% for field, errors in form.errors.items %}
+                    <li>{{ field|capfirst }}: {{ errors|join:", " }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
     <form method="post" class="p-4 border rounded shadow-sm bg-light">
         {% csrf_token %}
 
