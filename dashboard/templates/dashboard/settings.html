@@ -13,8 +13,22 @@
         </div>
     {% endif %}
 
+     
     <form method="post" class="p-4 border rounded shadow-sm {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
         {% csrf_token %}
+
+        <!-- Account Settings -->
+        <div class="mb-4">
+            <h2 class="h5 mb-3">Account Settings</h2>
+            <ul class="list-unstyled">
+                <li>
+                    <a href="{% url 'users:change_password' %}" class="btn btn-link">Change Password</a>
+                </li>
+                <li>
+                    <a href="{% url 'users:edit_profile' %}" class="btn btn-link">Update Profile</a>
+                </li>
+            </ul>
+        </div>
 
         <!-- Notification Settings -->
         <div class="mb-4">
