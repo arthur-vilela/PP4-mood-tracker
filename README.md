@@ -53,6 +53,51 @@ The tests ensure the correct functionality of the `Mood` model and its integrati
    - Verified that the `Mood` model appears in the admin panel with filters, search, and display functionality as configured.
 
 
+## Tests
+
+The project includes automated tests to ensure the proper functionality of key features such as user authentication, profile updates, and settings management. These tests verify that the application behaves as expected under various scenarios.
+
+### Key Areas Covered
+
+1. **Logout Confirmation**
+   - **Test Name:** `test_logout_confirm`
+   - Ensures that the logout confirmation page renders correctly and that the user is redirected to the home page upon confirmation.
+
+2. **Profile Update**
+   - **Test Name:** `test_profile_update`
+   - Validates that the profile update form is prepopulated with the current user's data.
+   - Confirms that changes to the username and email are saved correctly and reflected immediately.
+   - Verifies redirection to the dashboard after successful updates.
+
+3. **Password Change**
+   - **Test Name:** `test_password_change`
+   - Checks that the password change form validates new passwords correctly.
+   - Ensures that the user is redirected to the dashboard after a successful password change.
+
+### Running the Tests
+To execute the tests:
+1. Navigate to the project directory.
+2. Run the following command:
+   ```bash
+   python manage.py test
+   ```
+
+### Manual Testing
+
+In addition to automated tests, manual testing was performed to ensure:
+
+- Proper form rendering and validation.
+- Correct error messages for invalid inputs.
+- Seamless user experience on both desktop and mobile devices.
+
+Future Enhancements
+- Adding tests for edge cases, such as invalid email formats and weak passwords.
+- Expanding test coverage for additional user scenarios.
+
+
+
+
+
 ## Technologies Used
 
 | Technology                               | Use                                                                                                           |
