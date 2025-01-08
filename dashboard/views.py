@@ -66,44 +66,27 @@ def settings_view(request):
     except NotificationSettings.DoesNotExist:
         notification_settings = NotificationSettings.objects.create(user=request.user)
 
-    # Fetch user preferences
     preferences, created = UserPreferences.objects.get_or_create(user=request.user)
-
-    error_message = None  # To display error for Notification Time
 
     if request.method == "POST":
         notify_by_email = request.POST.get("notify_by_email", "off") == "on"
-        notify_time = request.POST.get("notify_time")
         dark_theme = request.POST.get("dark_theme", "off") == "on"
 
-        # Validate time if email notifications are enabled
-        if notify_by_email and not notify_time:
-            error_message = "Please provide a valid notification time."
-        else:
-            # Update settings
-            notification_settings.notify_by_email = notify_by_email
-            notification_settings.notify_time = notify_time if notify_time else "20:00"  # Default to 20:00
-            notification_settings.save()
-
-            # Save dark theme preference
-            preferences.dark_mode_enabled = dark_theme
-            preferences.save()
-            request.session["dark_theme"] = dark_theme
-
-            messages.success(request, "Settings updated successfully.")
-            return redirect("dashboard:settings")
-
-    # Pre-populate notification time with 20:00 if not set
-    if not notification_settings.notify_time:
-        notification_settings.notify_time = "20:00"
+        # Save notification preferences
+        notification_settings.notify_by_email = notify_by_email
         notification_settings.save()
 
-    print("Debug: notify_time in view:", notification_settings.notify_time)
+        # Save dark theme preference
+        preferences.dark_mode_enabled = dark_theme
+        preferences.save()
+        request.session["dark_theme"] = dark_theme
+
+        messages.success(request, "Settings updated successfully.")
+        return redirect("dashboard:settings")
 
     return render(request, "dashboard/settings.html", {
         "notification_settings": notification_settings,
         "preferences": preferences,
-        "error_message": error_message,
     })
 
 
