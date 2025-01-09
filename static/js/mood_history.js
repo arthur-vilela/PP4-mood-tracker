@@ -18,3 +18,18 @@ document.addEventListener("DOMContentLoaded", () => {
         deleteModalMood.textContent = moodType || "N/A";         // Set mood type
     });
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Select all alert messages
+    const alerts = document.querySelectorAll('.alert');
+    if (alerts) {
+        // Set a timeout to dismiss the messages after 5 seconds
+        setTimeout(() => {
+            alerts.forEach(alert => {
+                alert.classList.remove('show'); // Remove 'show' class for fade-out effect
+                alert.classList.add('fade');   // Add fade-out transition class
+                setTimeout(() => alert.remove(), 500); // Remove the element after fade-out
+            });
+        }, 5000); // Timeout duration fom miliseconds = 5 seconds
+    }
+});
