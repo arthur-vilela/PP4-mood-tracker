@@ -170,3 +170,7 @@ python manage.py runserver
 ```
 The application will be accessible on port `8000` at:
 `https://<workspace-url>/8000`
+
+## Credits
+
+https://forum.bootstrapstudio.io/
