@@ -90,11 +90,6 @@ def settings_view(request):
     })
 
 
-
-
-
-
-
 @login_required
 def edit_mood_view(request, pk):
     mood = get_object_or_404(Mood, pk=pk, user=request.user)
@@ -108,7 +103,6 @@ def edit_mood_view(request, pk):
         form = MoodForm(instance=mood)
     return render(request, "dashboard/edit_mood.html", {"form": form})
     
-
 
 @login_required
 def delete_mood_view(request, pk):
