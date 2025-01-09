@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
 from datetime import timedelta
@@ -54,7 +55,6 @@ def mood_calendar_view(request):
 def mood_history_view(request):
     """View to display the user's mood history."""
     moods = Mood.objects.filter(user=request.user).order_by('-date')  # Fetch moods in descending order of date
-    print("Debug: Moods QuerySet:", moods)  # Log the queryset
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
@@ -97,16 +97,18 @@ def edit_mood_view(request, pk):
         form = MoodForm(request.POST, instance=mood)
         if form.is_valid():
             form.save()
-            messages.success(request, "Mood entry updated successfully.")
+            messages.success(request, "Mood entry updated successfully!")
             return redirect("dashboard:mood_history")
+        else:
+            messages.error(request, "Error updating mood entry. Please check the form.")
     else:
         form = MoodForm(instance=mood)
     return render(request, "dashboard/edit_mood.html", {"form": form})
-    
+
 
 @login_required
 def delete_mood_view(request, pk):
     mood = get_object_or_404(Mood, pk=pk, user=request.user)
     mood.delete()
-    messages.success(request, "Mood entry deleted successfully.")
+    messages.success(request, "Mood entry deleted successfully!")
     return redirect("dashboard:mood_history")
