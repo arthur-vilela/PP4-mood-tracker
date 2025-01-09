@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch("/dashboard/mood-calendar/")
         .then((response) => response.json())
         .then((data) => {
-            console.log("Fetched data:", data);
 
             const moods = ["Happy", "Sad", "Anxious", "Angry", "Excited", "Calm", "Tired"];
             const colors = d3
@@ -27,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const firstDayOfMonth = new Date(year, month, 1);
                 const days = d3.timeDays(firstDayOfMonth, d3.timeMonth.offset(firstDayOfMonth, 1));
-                console.log(`Days for ${year}-${month + 1}:`, days);
 
                 // Add squares (rect elements)
                 g.selectAll(".day")

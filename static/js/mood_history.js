@@ -1,22 +1,24 @@
 document.addEventListener("DOMContentLoaded", () => {
     const deleteModal = document.getElementById("deleteModal");
-    const deleteForm = document.getElementById("deleteForm");
-    const deleteModalDate = document.getElementById("deleteModalDate");
-    const deleteModalMood = document.getElementById("deleteModalMood");
+    if (deleteModal) {
+        const deleteForm = document.getElementById("deleteForm");
+        const deleteModalDate = document.getElementById("deleteModalDate");
+        const deleteModalMood = document.getElementById("deleteModalMood");
 
-    deleteModal.addEventListener("show.bs.modal", (event) => {
-        const triggerButton = event.relatedTarget; // Button that triggered the modal
+        deleteModal.addEventListener("show.bs.modal", (event) => {
+            const triggerButton = event.relatedTarget; // Button that triggered the modal
 
-        // Extract data-* attributes from the triggering button
-        const moodId = triggerButton.getAttribute("data-id");
-        const moodDate = triggerButton.getAttribute("data-date");
-        const moodType = triggerButton.getAttribute("data-mood");
+            // Extract data-* attributes from the triggering button
+            const moodId = triggerButton.getAttribute("data-id");
+            const moodDate = triggerButton.getAttribute("data-date");
+            const moodType = triggerButton.getAttribute("data-mood");
 
-        // Update modal content
-        deleteForm.action = `/dashboard/delete-mood/${moodId}/`; // Set form action
-        deleteModalDate.textContent = moodDate || "N/A";         // Set mood date
-        deleteModalMood.textContent = moodType || "N/A";         // Set mood type
-    });
+            // Update modal content
+            deleteForm.action = `/dashboard/delete-mood/${moodId}/`; // Set form action
+            deleteModalDate.textContent = moodDate || "N/A";         // Set mood date
+            deleteModalMood.textContent = moodType || "N/A";         // Set mood type
+        });
+    }
 });
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -30,6 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert.classList.add('fade');   // Add fade-out transition class
                 setTimeout(() => alert.remove(), 500); // Remove the element after fade-out
             });
-        }, 5000); // Timeout duration fom miliseconds = 5 seconds
+        }, 5000); // Timeout duration in milliseconds = 5 seconds
     }
 });

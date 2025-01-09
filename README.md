@@ -75,12 +75,44 @@ The project includes automated tests to ensure the proper functionality of key f
    - Ensures that the user is redirected to the dashboard after a successful password change.
 
 ### Running the Tests
-To execute the tests:
-1. Navigate to the project directory.
-2. Run the following command:
-   ```bash
+To run the tests, execute the following command in your terminal:
+
+   ```
    python manage.py test
    ```
+
+### JavaScript Testing
+
+This project includes JavaScript tests to ensure functionality for interactive features like modals and message timeouts. 
+JavaScript functionality in this project was tested using Jest and the DOM Testing Library. The testing focused on verifying that the interactive elements of the application behave as expected.
+`Jest` was used for unit testing JavaScript functions. A dedicated directory for JavaScript tests in your project was created. This helps maintain a clean structure and keeps tests organized.
+
+#### Tests Conducted
+
+1. Timeout Messages
+   
+   The `messages.js` script ensures that alert messages disappear after 5 seconds. This functionality was tested to ensure:
+
+   - Messages with the `show` class are removed from the DOM after the timeout period.
+   - The functionality performs as expected in various user scenarios.
+
+2. Modal Data Population
+The `mood_history.js` script dynamically populates modal content for editing and deleting mood entries. Tests for this functionality ensured:
+
+   - The `edit` modal is populated with the correct `date` and `mood` values from the triggering button.
+   - The `delete` modal displays the correct `date` and `mood` in its fields.
+
+#### Running the Tests
+To run the JavaScript tests, execute the following command in your terminal:
+
+```
+npx jest
+```
+
+It's important to keep in mind that 
+- The JavaScript logic in this project is minimal and non-complex (e.g., message timeouts and modal data handling).
+- Manual testing in the browser covers all JavaScript functionality and ensures its reliability. The `D3js` JavaScript file's goal is only to render the calendar in the `dashboard` section. This is also verified manually by oberving the rendering and tweaking the code to adjust output.
+- The primary focus of this project is on backend functionality and Python-based tests.
 
 ### Manual Testing
 
@@ -109,6 +141,8 @@ Future Enhancements
 | [Heroku](https://www.heroku.com/)        | Cloud platform used for deploying, managing, and hosting the live version of the website.                     |
 | [GitHub](https://github.com/)            | Version control platform used to store the project’s repository, collaborate on code, and manage deployments. |  
 | [dbdiagram.io](https://dbdiagram.io/home)| ERD creation                                                                                                  |
+| [Jest](https://jestjs.io/)               | Unit testing JavaScript functions                                                                             |
+| [D3js](https://d3js.org/)                | Rendering the calendar                                                                              |
 
 ## Deployment to Heroku
 
