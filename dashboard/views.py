@@ -1,15 +1,18 @@
-from django.http import JsonResponse
+import os
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.views.decorators.http import require_POST
 from datetime import timedelta
 from collections import Counter
 from mood.models import Mood
 from mood.models import NotificationSettings
 from mood.models import UserPreferences
+from mood.management.commands.send_reminders import Command as SendRemindersCommand
 from .forms import MoodForm
 import calendar
 
@@ -88,6 +91,25 @@ def settings_view(request):
         "notification_settings": notification_settings,
         "preferences": preferences,
     })
+
+
+@login_required
+@require_POST
+def trigger_send_reminders(request):
+    """View to trigger the send_reminders function."""
+    # Verify the request contains the secret token
+    secret_token = request.headers.get("X-SECRET-TOKEN")
+    expected_token = os.getenv("SECRET_TOKEN")  # Add SECRET_TOKEN to your .env and Heroku Config Vars
+    if secret_token != expected_token:
+        return HttpResponseForbidden("Invalid secret token")
+
+    # Trigger the send_reminders function
+    try:
+        send_reminders = SendRemindersCommand()
+        send_reminders.handle()
+        return JsonResponse({"status": "success", "message": "Reminders sent successfully"})
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)}, status=500)
 
 
 @login_required

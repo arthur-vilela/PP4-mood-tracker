@@ -9,5 +9,6 @@ urlpatterns = [
     path('mood-history/', views.mood_history_view, name='mood_history'),
     path("edit-mood/<int:pk>/", views.edit_mood_view, name="edit_mood"),
     path("delete-mood/<int:pk>/", views.delete_mood_view, name="delete_mood"),
+    path("send-reminders/", views.trigger_send_reminders, name="trigger_send_reminders"),
     path('settings/', views.settings_view, name='settings'),
 ]
