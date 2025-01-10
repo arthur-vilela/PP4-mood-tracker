@@ -5,13 +5,75 @@ A Django-based web application for tracking moods, allowing users to record thei
 
 ___
 
+## Features
+
+### **Daily Reminder Email Feature**
+
+#### **Overview**
+The Daily Reminder Email feature ensures that users who opt-in receive a notification email at 20:00 UTC, reminding them to log their mood in the app. This feature is designed to help users maintain consistent mood tracking and make the most of the app's functionality.
+
+---
+
+#### **Feature Implementation**
+
+1. **Opt-In Settings**:
+   - Users can enable or disable email notifications through the **Settings** page.
+   - The notification preferences are stored in the `NotificationSettings` model with the field `notify_by_email`.
+
+2. **Email Content**:
+   - The email contains a friendly reminder message:
+     ```
+     Subject: Mood Tracker Reminder
+     Message: This is your daily reminder to log your mood in the Mood Tracker app!
+     ```
+
+3. **Automated Task**:
+   - A custom Django management command, `send_reminders`, is responsible for sending the emails.
+   - The command:
+     - Queries the database for users with `notify_by_email=True`.
+     - Sends reminder emails to the listed users using Django's `send_mail()` function.
+
+4. **Endpoint for Automation**:
+   - A secure endpoint (`/dashboard/send-reminders/`) allows external schedulers to trigger the reminder emails.
+   - This endpoint:
+     - Requires a secret token (`X-SECRET-TOKEN`) for authentication.
+     - Executes the `send_reminders` command when accessed via a POST request.
+
+5. **Automation with GitHub Actions**:
+   - A GitHub Actions workflow triggers the `/dashboard/send-reminders/` endpoint daily at 20:00.
+   - The workflow uses a secure `SECRET_TOKEN` stored in the repository's secrets to authenticate the request.
+
+---
+#### Testing the Feature
+1. Enable email notifications via the Settings page.
+2. Verify the reminder email is sent:
+- Check your inbox at the scheduled time.
+- Test the endpoint manually with curl
+   ```
+   curl -X POST https://pp4-mood-tracker-20082cf10f44.herokuapp.com/dashboard/send-reminders/ \
+     -H "X-SECRET-TOKEN: your_secret_token"
+   ```
+---
+#### **Main files**
+
+1. **Django Management Command**:
+
+   File: `mood/management/commands/send_reminders.py`
+
+2. **Trigger Endpoint**: 
+   
+   File: `dashboard/views.py`
+
+3. **GitHub Actions Workflow**: 
+   
+   File: `.github/workflows/send_reminders.yml`
+---
+
+## Models
+
 ### ERD
 
 ![Diagram of database table relations](docs/moodtracker-erd.png)
-
-___
-
-## Models
 
 ### Mood Model
 
