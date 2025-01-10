@@ -2,10 +2,120 @@
 
 ## Description
 A Django-based web application for tracking moods, allowing users to record their emotional state, actions, and analyze patterns over time.
+## Overview
 
+Mood Tracker is a portfolio project developed as part of the Full Stack Development course curriculum from Code Institute. This application was created with the goal of providing a simple, user-friendly tool for individuals to track their emotional responses over time. It offers insights that can help users better understand themselves or serve as a supplemental tool in therapy sessions.
+
+## Motivation
+
+The project theme was free to choose, and I opted for mood tracking because it's a topic close to my heart and an essential one for society. The app aims to empower individuals to log their moods, reflect on past experiences, and foster emotional awareness.
+
+## Target Audience
+
+The application is intended for the general public, particularly individuals seeking to improve their mental health through self-reflection. Users can benefit from a visual overview of their emotional trends and the ability to revisit older entries.
 ___
 
 ## Features
+
+### **Mood Logging**
+Users can log daily moods along with optional notes and actions.
+
+#### **Implementation**
+1. **Frontend**:
+   - The mood entry page provides a user-friendly form where users can:
+     - Select their mood from predefined choices (e.g., Happy, Sad, Anxious).
+     - Add optional notes and actions to describe their day.
+     - Specify the date of the mood entry (defaults to today’s date).
+   - The form uses Bootstrap styling for a clean, responsive design.
+   - Template file: `mood/templates/mood_entry.html`
+
+2. **Backend**:
+   - **Model**:
+     - Mood entries are stored in the `Mood` model, which includes:
+       - User reference (`ForeignKey` to `AUTH_USER_MODEL`).
+       - Mood type (with predefined choices using `TextChoices`).
+       - Date, notes, and actions for additional details.
+       - Timestamps for creation and updates.
+
+
+   - **Form**:
+     - A custom `MoodEntryForm` validates user input:
+       - Ensures dates are within the last two weeks using a custom validator.
+       - Provides HTML5 date input and styled textareas for notes/actions.
+   - **View**:
+     - The `mood_entry_view` handles form submissions:
+       - Validates input and associates the entry with the logged-in user.
+       - Saves the entry and redirects to the dashboard upon success.
+       - Example from `mood/views.py`:
+
+   - **URLs**:
+     - The form is accessible via `/mood/entry/`, registered in `mood/urls.py`:
+
+3. **Security**:
+   - CSRF protection is implemented using Django’s built-in mechanism.
+   - Only logged-in users can access the mood entry page (`@login_required`).
+
+4. **Validation**:
+   - Date validation ensures entries are no older than two weeks.
+   - Form validation ensures required fields are filled and follow constraints.
+
+---
+
+### **Visual Calendar**
+A calendar on the dashboard provides a color-coded overview of logged moods.
+
+#### **Implementation**
+1. **Frontend**:
+   - The calendar is dynamically rendered using **D3.js** to display an SVG element for each month.
+   - Each cell represents a day and is color-coded based on the most frequent mood logged for that day.
+   - A legend provides a visual guide for mood colors.
+
+2. **Backend**:
+   - A dedicated Django view aggregates mood data by date, determining the most frequent mood per day using Python's `Counter`.
+   - The processed data is sent to the frontend as a JSON object.
+
+3. **Integration**:
+   - The `dashboard.html` template fetches the JSON data and renders it into the calendar using a JavaScript script.
+   - Users can view their mood patterns over time in a responsive and visually appealing way.
+
+---
+
+### **History Review**
+Users can revisit older entries through an accordion-style mood history page.
+
+#### **Implementation**
+1. **Frontend**:
+   - Bootstrap's accordion component is used to create a collapsible interface.
+   - Each entry displays the mood type, date, and optional notes or actions.
+   - Users can edit or delete entries directly from the history page.
+
+2. **Backend**:
+   - A Django view retrieves all moods for the logged-in user, sorted by date in descending order.
+   - Pagination or lazy loading is not currently implemented but can be added for performance optimization.
+
+3. **Integration**:
+   - The `mood_history.html` template includes modals for delete confirmations.
+   - A separate JavaScript file handles interactivity, such as populating the delete modal.
+
+---
+
+### **Dark Mode**
+A toggle allows users to switch between light and dark themes.
+
+#### **Implementation**
+1. **Frontend**:
+   - The settings page includes a toggle switch for enabling or disabling dark mode.
+   - CSS classes are applied dynamically to templates based on user preferences.
+
+2. **Backend**:
+   - The `UserPreferences` model stores the dark mode preference for each user.
+   - The `settings_view` updates the preference based on form input and sets a session variable to persist the preference.
+
+3. **Integration**:
+   - Dark mode applies to all key components, including the navbar, content sections, and footer.
+   - The theme persists across sessions, ensuring a consistent user experience.
+
+---
 
 ### **Daily Reminder Email Feature**
 
@@ -54,19 +164,37 @@ The Daily Reminder Email feature ensures that users who opt-in receive a notific
      -H "X-SECRET-TOKEN: your_secret_token"
    ```
 ---
-#### **Main files**
 
-1. **Django Management Command**:
+### **User Profile Management**
+Users can update their username, email, and password.
 
-   File: `mood/management/commands/send_reminders.py`
+#### **Implementation**
+1. **Frontend**:
+   - Profile update forms include fields for editing the username and email, along with secure fields for password changes.
+   - Bootstrap styling ensures a clean and responsive user interface.
 
-2. **Trigger Endpoint**: 
-   
-   File: `dashboard/views.py`
+2. **Backend**:
+   - Profile updates are managed by Django Allauth, leveraging its built-in functionality for authentication and user account management.
+   - Passwords are securely hashed and validated using Django's authentication tools.
 
-3. **GitHub Actions Workflow**: 
-   
-   File: `.github/workflows/send_reminders.yml`
+3. **Integration**:
+   - Notifications confirm successful updates to the user's profile.
+   - The updated information is immediately reflected in the user session.
+
+---
+
+### **Responsive Design**
+The application is mobile-friendly and adjusts to different screen sizes.
+
+#### **Implementation**
+1. **Frontend**:
+   - Bootstrap's grid system ensures consistent layouts across devices.
+   - Media queries provide additional styling for small and large screens, optimizing the user interface.
+
+2. **Integration**:
+   - The design is tested on a variety of devices and browsers to ensure accessibility.
+   - Elements like the navbar, forms, and tables adjust seamlessly to smaller screens.
+
 ---
 
 ## Models

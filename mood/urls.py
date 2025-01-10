@@ -5,5 +5,4 @@ app_name = "mood"
 
 urlpatterns = [
     path("entry/", views.mood_entry_view, name="mood_entry"),
-    # Add other URLs here
 ]
