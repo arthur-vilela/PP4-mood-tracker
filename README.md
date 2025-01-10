@@ -584,49 +584,6 @@ This subsection links the project's core features to their respective automated 
   - Checked that opt-in users receive emails at the specified time.
 
 ---
-
-### **Testing Summary**
-This mapping ensures that all critical features of the project are thoroughly tested. Each feature’s functionality, edge cases, and integration are verified through a combination of automated and manual testing methods.
-
----
-
-### **Test Suite Details**
-
-#### **Model Tests**
-The `test_models.py` file includes:
-
-- **Mood**:
-  - Validates the creation of moods and their attributes (e.g., timestamps, notes).
-  - Confirms the string representation accurately reflects the user's mood and date.
-
-- **NotificationSettings**:
-  - Tests creation and management of user notification preferences.
-  - Validates proper handling of email notification settings.
-
-- **UserPreferences**:
-  - Ensures correct behavior of dark mode settings and string representation.
-
-#### **View Tests**
-The `test_views.py` files for `users` and `dashboard` test:
-
-- **Authenticated Access**:
-  - Ensures pages like the dashboard and mood history are inaccessible to unauthenticated users.
-  - Confirms appropriate redirection to the login page.
-
-- **Data Integrity**:
-  - Tests that views correctly fetch and render mood data.
-  - Ensures JSON endpoints provide accurate data for frontend visualizations.
-
-- **Template Rendering**:
-  - Confirms views render the correct templates for each feature.
-
-#### **JavaScript Tests**
-Tests ensure dynamic frontend functionality works seamlessly:
-- Alert messages disappear after the specified timeout.
-- Modals are populated with the correct mood details for editing and deletion.
-
----
-
 ### **Running the Tests**
 
 #### **Python Tests**
@@ -686,6 +643,77 @@ In addition to automated tests, manual testing was conducted to verify:
 - Add performance testing for large datasets, particularly for calendar and history views.
 
 ---
+
+## **Security**
+
+Ensuring the security of user data and the application’s integrity is a top priority for Mood Tracker. This section outlines the measures implemented to protect sensitive information and secure the platform against potential vulnerabilities.
+
+---
+
+### **1. CSRF Protection**
+
+  - Django’s built-in **CSRF (Cross-Site Request Forgery)** protection is enabled across all POST requests.
+  - CSRF tokens are included in forms and validated on the server to prevent unauthorized actions.
+  - Example: CSRF token was included in all forms, such as the `mood-entry` form:
+
+  ```
+  <form method="POST" class="mt-4">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary w-45">Cancel</a>
+    </form>
+  ```
+
+---
+
+### **2. Secret Key Management**
+
+  - The `SECRET_KEY` is securely stored in an environment variable and is never exposed in the project repository.
+  - The application relies on this key for cryptographic operations.
+  - The `SECRET_KEY` was added to the environment in deployment via Heroku Config Vars.
+
+---
+
+### **3. Sensitive Data Exclusion and Environment Variables**
+
+  - Sensitive information such as email credentials (`EMAIL_USER` and `EMAIL_PASSWORD`), database configuration, and the `SECRET_KEY` is stored in environment variables.
+  - These variables are loaded at runtime and are not included in the source code.
+  - `.env` or `env.py` files containing environmental variables are used locally and securely excluded from version control.
+  - The variables in those files were added to the environment in deployment via Heroku Config Vars.
+  - Sensitive files (e.g., `.env`, `env.py`) are excluded from the Git repository using `.gitignore`.
+  - The repository contains no hardcoded credentials or keys.
+
+---
+
+### **4. HTTPS and Secure Connections**
+
+  - The application is deployed on Heroku with **HTTPS enforced** for all connections.
+  - Secure transmission ensures that user data is encrypted during communication between the client and server.
+   ```
+   https://pp4-mood-tracker-20082cf10f44.herokuapp.com/
+   ```
+
+---
+
+### **5. Authentication and Password Security**
+
+  - User passwords are stored in the database using Django’s default **PBKDF2 password hashing** mechanism.
+  - Django Allauth manages user authentication, ensuring robust security for login and registration processes.
+  - Django Allauth includes the following password restrictions:
+      - Your password can’t be too similar to your other personal information.
+      - Your password must contain at least 8 characters.
+      - Your password can’t be a commonly used password.
+      - Your password can’t be entirely numeric.
+
+---
+
+### **Future Enhancements**
+
+  - I consider implementing additional security measures, such as:
+    - Multi-factor authentication for user accounts.
+    - Additional validation layers for email notifications and user inputs.
+
 
 ## Technologies Used
 
