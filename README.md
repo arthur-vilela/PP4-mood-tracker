@@ -197,6 +197,111 @@ The application is mobile-friendly and adjusts to different screen sizes.
 
 ---
 
+## Agile Development Process
+
+### Project Management
+The development followed an Agile methodology with:
+
+- User Stories: Created for all features and mapped to Epics.
+- Kanban Board: Managed tasks, priorities, and timelines on GitHub Projects.
+
+### Epics and User Stories
+Each feature corresponds to well-defined user stories:
+
+- #### **Epic: User Account Features**
+   *Purpose:*  Create, edit and control user account and its configuration.
+   Group all features related to user account creation, authentication, and management.
+
+   - **User Story**: As a _site user_, I can _register, log in, and log out_ so that I can _securely access my account._
+
+      Acceptance Criteria:
+      - AC1: The user can register with a username, email, and password.
+      - AC2: The user can log in with valid credentials and log out at any time.
+      - AC3: The site restricts access to authenticated users for private content.
+
+    - **User Story**: As a _site user_, I can _update my profile information_ so that _I can keep my details current._
+
+      Acceptance Criteria:
+      - AC1: The user can edit their username and email.
+      - AC2: The user can change their password through a secure form.
+      - AC3: Changes are saved and reflected immediately.
+
+   - **User story** - As a _site user_, I can _enable or disable dark mode_ so that I can _customize the website's appearance_.
+
+      Acceptance criteria: 
+      - AC1: The settings page provides a toggle for enabling or disabling dark mode.
+      - AC2: Changes to dark mode are applied immediately without refreshing the page.
+      - AC3: My preference is saved and remembered for future visits.
+   
+   - **User Story**: As a _site user_, I can _configure notification preferences_ so that I can _receive daily reminders to log my mood_.
+
+      Acceptance Criteria:
+      - AC1: The user can enable or disable email notifications.
+      - AC2: The system saves and reflects the updated settings on the dashboard.
+      - AC3: A reminder email is sent daily at 20:00 UTC if the user has enabled email notifications
+
+
+- #### **Epic: Mood Tracking Features**
+   *Purpose:* User can log their mood.
+
+   - **User Story**: As a _site user_, I can _log a new mood entry_ so that I can _track my daily emotions and notes_.
+
+      Acceptance Criteria:
+      - AC1: The user fills in a form to select a mood type, add a date, and optional notes or actions.
+      - AC2: The system validates the form and saves the mood entry to the database.
+      - AC3: The user receives a confirmation message upon successful save.
+
+   - **User Story**: As a _site user,_ I can _edit a mood entry_ so that I can _correct or update past data_.
+
+      Acceptance Criteria:
+      - AC1: The user can access an edit form pre-filled with the mood entry details.
+      - AC2: The system validates and updates the entry upon submission.
+      - AC3: Changes are reflected in the mood history and charts.
+
+   - **User Story**: As a _site user_, I can _delete a mood entry_ so that I can _remove incorrect or unnecessary data_.
+
+      Acceptance Criteria:
+      - AC1: The user confirms the deletion through a prompt.
+      - AC2: The system deletes the mood entry and updates the database.
+      - AC3: The deletion is reflected in the mood history and charts.
+
+- #### **Epic: Dashboard Features**
+   User can view their mood history on a calendar to identify trends.
+
+   - **User Story**: As a _site user_, I can _view my mood history_ so that I can _reflect on my mood patterns over time_.
+
+      Acceptance Criteria:
+      - AC1: The user sees a list of their mood entries ordered by date.
+      - AC2: Each mood entry displays the mood type, date, and any notes added.
+      - AC3: The user can click on an entry to edit or delete it.
+
+   - **User Story**: As a _site user_, I can _view visualized charts of my mood data_ so that I can _better understand trends and patterns_.
+
+      Acceptance Criteria:
+      - AC1: The chart displays mood types over time on a calendar like graph.
+      - AC2: The chart includes a legend for mood types.
+      - AC3: The chart dynamically updates as the user adds, edits, or deletes mood entries.
+      User Story: As a _site user_, I can _configure notification preferences_ so that I can _receive daily reminders to log my mood_.
+
+
+
+- #### **Epic: Admin Features**
+   As an administrator, I can manage users and their mood entries.
+
+   - **User Story**: As an _admin user_, I can _manage user accounts_ so that I can _resolve issues or moderate the platform_.
+
+      Acceptance Criteria:
+      - AC1: The admin can view a list of all user accounts.
+      - AC2: The admin can edit or deactivate a user account.
+      - AC3: The admin cannot view or edit user passwords.
+
+   - **User Story**: As an _admin user_, I can _view and manage mood entries_ so that I can _moderate content and maintain data integrity._
+
+      Acceptance Criteria:
+      - AC1: The admin can view all mood entries across users.
+      - AC2: The admin can delete inappropriate or duplicate entries.
+      - AC3: Changes made by the admin are logged for accountability.
+
 ## Models
 
 ### ERD
