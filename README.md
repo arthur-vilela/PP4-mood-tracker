@@ -143,6 +143,7 @@ Future Enhancements
 | [dbdiagram.io](https://dbdiagram.io/home)| ERD creation                                                                                                  |
 | [Jest](https://jestjs.io/)               | Unit testing JavaScript functions                                                                             |
 | [D3js](https://d3js.org/)                | Rendering the calendar                                                                              |
+| [RandomKeygen](https://randomkeygen.com/)| Generating secure random keys |
 
 ## Deployment to Heroku
 

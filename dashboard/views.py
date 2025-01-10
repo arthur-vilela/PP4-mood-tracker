@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.contrib.auth.decorators import login_required
 from django.utils.timezone import now
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from datetime import timedelta
 from collections import Counter
@@ -92,14 +93,13 @@ def settings_view(request):
         "preferences": preferences,
     })
 
-
-@login_required
+@csrf_exempt
 @require_POST
 def trigger_send_reminders(request):
     """View to trigger the send_reminders function."""
     # Verify the request contains the secret token
     secret_token = request.headers.get("X-SECRET-TOKEN")
-    expected_token = os.getenv("SECRET_TOKEN")  # Add SECRET_TOKEN to your .env and Heroku Config Vars
+    expected_token = os.getenv("SECRET_TOKEN") 
     if secret_token != expected_token:
         return HttpResponseForbidden("Invalid secret token")
 
