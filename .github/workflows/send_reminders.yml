@@ -1,0 +1,14 @@
+name: Send Reminders
+
+on:
+  schedule:
+    - cron: '0 20 * * *'
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send reminders
+        run: |
+          curl -X POST https://your-app.herokuapp.com/send-reminders/ \
+          -H "X-SECRET-TOKEN: ${{ secrets.SECRET_TOKEN }}"
