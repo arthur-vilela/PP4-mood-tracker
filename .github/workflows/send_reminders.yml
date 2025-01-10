@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Send reminders
         run: |
-          curl -X POST https://pp4-mood-tracker-20082cf10f44.herokuapp.com/send-reminders/ \
+          curl -X POST https://pp4-mood-tracker-20082cf10f44.herokuapp.com/dashboard/send-reminders/ \
           -H "X-SECRET-TOKEN: ${{ secrets.SECRET_TOKEN }}"
