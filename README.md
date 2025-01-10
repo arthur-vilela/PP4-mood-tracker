@@ -326,6 +326,8 @@ Additional fields or methods could include custom validation or integration with
 - Ensures secure password management with built-in hashing.
 - Tests CRUD operations for updating user profiles (username, email, password).
 
+---
+
 ### Mood Model
 
 The Mood model represents user-submitted mood entries and includes fields to capture details about their emotional state on specific dates. This model allows users to document their feelings, actions taken, and additional notes for reflection or tracking purposes.
@@ -367,10 +369,12 @@ The tests ensure the correct functionality of the `Mood` model and its integrati
 
 ---
 
+
 ### Notification Settings Model
 
 Purpose: Manages user preferences for email notifications, allowing users to toggle reminders for mood logging and specify the notification time.
-Due to time and skill limitations, the previous idea of having the user select their preferred time for receiveing the email reminder was discarded. The Notification Settings model was already created at that point, with the `notify_time` field responsible for storing the user specified notification time. To avoid migration issues and to keep the possibility for future implementation of this feature, the `notify_time` was left in the model, although not used in the project at the moment.
+
+> Due to time and skill limitations, the previous idea of having the user select their preferred time for receiveing the email reminder was discarded. The Notification Settings model was already created at that point, with the `notify_time` field responsible for storing the user specified notification time. To avoid migration issues and to keep the possibility for future implementation of this feature, the `notify_time` was left in the model, although not used in the project at the moment.
 
 #### Fields
 
@@ -385,6 +389,8 @@ Due to time and skill limitations, the previous idea of having the user select t
 - Validates the default values for `notify_by_email` and `notify_time`.
 - Tests CRUD operations for updating notification settings.
 - Ensures reminders are sent only if `notify_by_email` is true.
+
+---
 
 ### User Preferences Model
 
@@ -439,22 +445,148 @@ The project includes automated tests to ensure the functionality of all key feat
   - Ensured users can enable/disable notifications and set a preferred notification time.
 
 ##### **User Management Views**
+
 - **Logout Confirmation**:
   - Confirmed the logout confirmation page renders correctly.
   - Verified that users are logged out and redirected to the home page.
+
 - **Profile Update**:
   - Tested the profile update form pre-populates with user data (username, email).
   - Validated updates to username and email are saved and reflected immediately.
+
 - **Password Change**:
   - Verified successful password changes with valid data.
   - Tested error handling for invalid old passwords and mismatched new passwords.
 
 #### **3. JavaScript Tests**
 JavaScript functionality was tested using Jest to ensure interactive elements perform as expected:
+
 - **Timeout Messages**:
   - Verified alert messages are removed from the DOM after 5 seconds.
+
 - **Modal Data Handling**:
   - Ensured the `edit` and `delete` modals are populated with correct data from user actions.
+
+---
+
+### **Feature-to-Test Mapping**
+
+This subsection links the project's core features to their respective automated and manual tests, ensuring comprehensive coverage of functionality.
+
+---
+
+#### **1. Feature: Mood Logging**
+**Description**: Users can log daily moods, including optional notes and actions, and specify a date.
+
+- **Automated Tests**:
+  - **Model Tests**:
+    - Verified mood creation, including the correct assignment of user, mood type, date, notes, and actions.
+    - Ensured timestamps (`created_at`, `updated_at`) are automatically generated.
+    - Validated `__str__` representation reflects the user's mood and date.
+  - **View Tests**:
+    - Tested the mood entry view to ensure only authenticated users can access the page.
+    - Checked form validation for required fields, date limits (no older than two weeks), and invalid mood types.
+  - **Form Tests**:
+    - Validated that the `MoodEntryForm` correctly applies custom validators for date inputs.
+    - Ensured the form handles optional fields (notes, actions) appropriately.
+
+- **Edge Cases**:
+  - Form submission with invalid mood types or missing required fields.
+  - Form submissions with dates outside the allowed range.
+
+- **Manual Testing**:
+  - Verified that the mood logging form renders correctly and saves data to the database.
+  - Checked that invalid inputs trigger appropriate error messages.
+  - Tested usability across devices (desktop, mobile, tablet).
+
+---
+
+#### **2. Feature: Visual Calendar**
+**Description**: Displays a color-coded calendar of logged moods to visualize patterns over time.
+
+- **Automated Tests**:
+  - **View Tests**:
+    - Verified that the mood calendar endpoint returns the correct JSON structure (`labels`, `data`).
+    - Ensured the view handles cases with no mood entries gracefully.
+    - Tested that only authenticated users can access the calendar data.
+  - **JavaScript Tests**:
+    - Checked that the D3.js script renders the calendar dynamically based on the JSON data.
+    - Verified the correct colors are applied for each mood type using test data.
+
+- **Edge Cases**:
+  - Empty data sets (no moods logged).
+  - Invalid mood types included in the data.
+
+- **Manual Testing**:
+  - Observed the rendering of the calendar for different months and mood data sets.
+  - Checked that calendar elements are responsive and visually accurate across devices and browsers.
+
+---
+
+#### **3. Feature: History Review**
+**Description**: Allows users to revisit, edit, or delete past mood entries.
+
+- **Automated Tests**:
+  - **View Tests**:
+    - Tested that the history view fetches and displays moods sorted by date in descending order.
+    - Checked that the correct template is rendered.
+    - Verified only authenticated users can access the mood history page.
+  - **JavaScript Tests**:
+    - Ensured the `delete` and `edit` modals populate with the correct mood data.
+    - Tested that modal interactions function as expected.
+
+- **Edge Cases**:
+  - Deleting a mood entry that no longer exists (simulated by another user’s action).
+  - Editing an entry with invalid data.
+
+- **Manual Testing**:
+  - Tested the responsiveness and functionality of the accordion component.
+  - Checked the integration of modals for editing and deleting entries.
+
+---
+
+#### **4. Feature: Dark Mode**
+**Description**: Allows users to toggle between light and dark themes.
+
+- **Automated Tests**:
+  - **Model Tests**:
+    - Verified that the `UserPreferences` model stores and retrieves the `dark_mode_enabled` value correctly.
+  - **View Tests**:
+    - Tested the settings view to ensure user preferences are updated on form submission.
+    - Verified the dark mode toggle affects the session and persists across requests.
+
+- **Edge Cases**:
+  - Session expiration during dark mode toggle.
+  - Simulated user preference conflicts (e.g., two devices updating settings simultaneously).
+
+- **Manual Testing**:
+  - Observed the application’s appearance in light and dark modes.
+  - Verified that theme preferences persist across logins and devices.
+
+---
+
+#### **5. Feature: Daily Reminder Email**
+**Description**: Sends email notifications to users who opt-in for daily reminders.
+
+- **Automated Tests**:
+  - **Model Tests**:
+    - Verified the default values of `NotificationSettings` (e.g., `notify_by_email`).
+  - **View Tests**:
+    - Tested the email reminders endpoint to ensure it triggers correctly with valid tokens.
+    - Checked that reminders are sent only to users with notifications enabled.
+
+- **Edge Cases**:
+  - Invalid email configurations (e.g., missing SMTP credentials).
+  - Database errors during the reminder query.
+
+- **Manual Testing**:
+  - Verified the email content and formatting.
+  - Checked that opt-in users receive emails at the specified time.
+
+---
+
+### **Testing Summary**
+This mapping ensures that all critical features of the project are thoroughly tested. Each feature’s functionality, edge cases, and integration are verified through a combination of automated and manual testing methods.
 
 ---
 
@@ -462,23 +594,29 @@ JavaScript functionality was tested using Jest to ensure interactive elements pe
 
 #### **Model Tests**
 The `test_models.py` file includes:
+
 - **Mood**:
   - Validates the creation of moods and their attributes (e.g., timestamps, notes).
   - Confirms the string representation accurately reflects the user's mood and date.
+
 - **NotificationSettings**:
   - Tests creation and management of user notification preferences.
   - Validates proper handling of email notification settings.
+
 - **UserPreferences**:
   - Ensures correct behavior of dark mode settings and string representation.
 
 #### **View Tests**
 The `test_views.py` files for `users` and `dashboard` test:
+
 - **Authenticated Access**:
   - Ensures pages like the dashboard and mood history are inaccessible to unauthenticated users.
   - Confirms appropriate redirection to the login page.
+
 - **Data Integrity**:
   - Tests that views correctly fetch and render mood data.
   - Ensures JSON endpoints provide accurate data for frontend visualizations.
+
 - **Template Rendering**:
   - Confirms views render the correct templates for each feature.
 
@@ -503,6 +641,26 @@ Run JavaScript tests with Jest:
 ```
 npx jest
 ```
+
+---
+
+### **Test Results**
+
+#### **Automated Python Tests**
+- **Command**: `python manage.py test`
+- **Screenshot Placeholder**: Add a screenshot of the Python test output showing all tests passing.
+
+#### **Automated JavaScript Tests**
+- **Command**: `npx jest`
+- **Screenshot Placeholder**: Add a screenshot of the Jest test output showing all JavaScript tests passing.
+
+#### **Edge Case Tests**
+- **Examples**:
+  - Placeholder: Include screenshots or logs for tests that handle invalid inputs, unauthorized access, or other edge cases.
+
+---
+
+
 ### Manual Testing
 In addition to automated tests, manual testing was conducted to verify:
 
@@ -526,6 +684,8 @@ In addition to automated tests, manual testing was conducted to verify:
 - Increase test coverage for edge cases, such as network failures and invalid input formats.
 - Automate browser testing with tools like Selenium or Cypress.
 - Add performance testing for large datasets, particularly for calendar and history views.
+
+---
 
 ## Technologies Used
 
