@@ -308,6 +308,24 @@ Each feature corresponds to well-defined user stories:
 
 ![Diagram of database table relations](docs/moodtracker-erd.png)
 
+### User Model
+Purpose: Extends the Django authentication system, enabling user management for the platform.
+
+#### Fields
+Inherits fields like username, email, and password from Django’s built-in User model.
+| Field | Description |
+|-------|-------------|
+|`user` | Primary key, identifying each single user.|
+|`email`| Email field storing users email for notification |
+|`password`| Storing user created password unavailable to Admin
+
+Additional fields or methods could include custom validation or integration with related models.
+
+#### Tests Performed
+- Validates authentication functionality, including registration, login, and logout.
+- Ensures secure password management with built-in hashing.
+- Tests CRUD operations for updating user profiles (username, email, password).
+
 ### Mood Model
 
 The Mood model represents user-submitted mood entries and includes fields to capture details about their emotional state on specific dates. This model allows users to document their feelings, actions taken, and additional notes for reflection or tracking purposes.
@@ -328,9 +346,9 @@ The Mood model represents user-submitted mood entries and includes fields to cap
 The `mood_type` field restricts entries to predefined choices to maintain data integrity.
 Admin Panel Features
 The model is registered in the Django admin panel with the following enhancements:
-Search Fields: user and note for quick lookup.
-Filter Options: mood_type and date for targeted filtering.
-Display Configuration: Shows user, date, mood_type, and created_at for each entry.
+- Search Fields: user and note for quick lookup.
+- Filter Options: mood_type and date for targeted filtering.
+- Display Configuration: Shows user, date, mood_type, and created_at for each entry.
 
 #### Tests
 
@@ -347,83 +365,167 @@ The tests ensure the correct functionality of the `Mood` model and its integrati
 3. **Admin Panel Check**:
    - Verified that the `Mood` model appears in the admin panel with filters, search, and display functionality as configured.
 
+---
 
-## Tests
+### Notification Settings Model
 
-The project includes automated tests to ensure the proper functionality of key features such as user authentication, profile updates, and settings management. These tests verify that the application behaves as expected under various scenarios.
+Purpose: Manages user preferences for email notifications, allowing users to toggle reminders for mood logging and specify the notification time.
+Due to time and skill limitations, the previous idea of having the user select their preferred time for receiveing the email reminder was discarded. The Notification Settings model was already created at that point, with the `notify_time` field responsible for storing the user specified notification time. To avoid migration issues and to keep the possibility for future implementation of this feature, the `notify_time` was left in the model, although not used in the project at the moment.
 
-### Key Areas Covered
+#### Fields
 
-1. **Logout Confirmation**
-   - **Test Name:** `test_logout_confirm`
-   - Ensures that the logout confirmation page renders correctly and that the user is redirected to the home page upon confirmation.
+| Field | Description |
+|-------|-------------|
+|`user` | Links notification settings to a specific user.|
+|`notify_by_email` | Boolean indicating if reminders are enabled.|
+|`notify_time`| Specifies the time for sending notifications.|
 
-2. **Profile Update**
-   - **Test Name:** `test_profile_update`
-   - Validates that the profile update form is prepopulated with the current user's data.
-   - Confirms that changes to the username and email are saved correctly and reflected immediately.
-   - Verifies redirection to the dashboard after successful updates.
+#### Tests Performed
 
-3. **Password Change**
-   - **Test Name:** `test_password_change`
-   - Checks that the password change form validates new passwords correctly.
-   - Ensures that the user is redirected to the dashboard after a successful password change.
+- Validates the default values for `notify_by_email` and `notify_time`.
+- Tests CRUD operations for updating notification settings.
+- Ensures reminders are sent only if `notify_by_email` is true.
 
-### Running the Tests
-To run the tests, execute the following command in your terminal:
+### User Preferences Model
 
-   ```
-   python manage.py test
-   ```
+Purpose: Tracks user preferences for application settings, such as enabling dark mode for the user interface.
 
-### JavaScript Testing
+#### Fields
+| Field | Description |
+|-------|-------------|
+|`user` | Links preferences to a specific user.|
+|`dark_mode_enabled`| Boolean indicating if dark mode is active.|
 
-This project includes JavaScript tests to ensure functionality for interactive features like modals and message timeouts. 
-JavaScript functionality in this project was tested using Jest and the DOM Testing Library. The testing focused on verifying that the interactive elements of the application behave as expected.
-`Jest` was used for unit testing JavaScript functions. A dedicated directory for JavaScript tests in your project was created. This helps maintain a clean structure and keeps tests organized.
+#### Tests Performed
+- Ensures that preferences are correctly linked to a user.
+- Validates toggling dark mode and its persistence across sessions.
+- Tests default preference creation when a user account is initialized.
 
-#### Tests Conducted
+## **Tests**
 
-1. Timeout Messages
-   
-   The `messages.js` script ensures that alert messages disappear after 5 seconds. This functionality was tested to ensure:
+The project includes automated tests to ensure the functionality of all key features, including user authentication, mood tracking, and notification settings. Comprehensive tests were written for models, views, forms, and JavaScript functionality. The application has been tested manually and through automation to ensure robustness and a seamless user experience.
 
-   - Messages with the `show` class are removed from the DOM after the timeout period.
-   - The functionality performs as expected in various user scenarios.
+---
 
-2. Modal Data Population
-The `mood_history.js` script dynamically populates modal content for editing and deleting mood entries. Tests for this functionality ensured:
+### **Key Areas Covered**
 
-   - The `edit` modal is populated with the correct `date` and `mood` values from the triggering button.
-   - The `delete` modal displays the correct `date` and `mood` in its fields.
+#### **1. Model Tests**
+- Verified the correctness of model behavior and string representations for:
+  - **Mood**:
+    - Test for mood creation with all fields (e.g., mood type, note, action).
+    - Validated `__str__` representation for user-friendly display.
+  - **NotificationSettings**:
+    - Ensured correct default behavior for notification preferences.
+    - Verified proper handling of notification times.
+  - **UserPreferences**:
+    - Tested dark mode toggle functionality.
+    - Checked `__str__` representation reflects dark mode status.
 
-#### Running the Tests
-To run the JavaScript tests, execute the following command in your terminal:
+#### **2. View Tests**
 
+##### **Dashboard Views**
+
+- **Mood Calendar**:
+  - Tested that the calendar view returns JSON with correct labels and data for moods.
+  - Verified handling of no moods and invalid mood types.
+  - Checked that unauthenticated users are redirected to the login page.
+
+- **Mood History**:
+  - Ensured the mood history page loads correctly with the appropriate template.
+  - Verified that moods are displayed correctly, including all attributes (e.g., mood type, date).
+
+- **Notification Settings**:
+  - Tested updating notification preferences through the settings page.
+  - Ensured users can enable/disable notifications and set a preferred notification time.
+
+##### **User Management Views**
+- **Logout Confirmation**:
+  - Confirmed the logout confirmation page renders correctly.
+  - Verified that users are logged out and redirected to the home page.
+- **Profile Update**:
+  - Tested the profile update form pre-populates with user data (username, email).
+  - Validated updates to username and email are saved and reflected immediately.
+- **Password Change**:
+  - Verified successful password changes with valid data.
+  - Tested error handling for invalid old passwords and mismatched new passwords.
+
+#### **3. JavaScript Tests**
+JavaScript functionality was tested using Jest to ensure interactive elements perform as expected:
+- **Timeout Messages**:
+  - Verified alert messages are removed from the DOM after 5 seconds.
+- **Modal Data Handling**:
+  - Ensured the `edit` and `delete` modals are populated with correct data from user actions.
+
+---
+
+### **Test Suite Details**
+
+#### **Model Tests**
+The `test_models.py` file includes:
+- **Mood**:
+  - Validates the creation of moods and their attributes (e.g., timestamps, notes).
+  - Confirms the string representation accurately reflects the user's mood and date.
+- **NotificationSettings**:
+  - Tests creation and management of user notification preferences.
+  - Validates proper handling of email notification settings.
+- **UserPreferences**:
+  - Ensures correct behavior of dark mode settings and string representation.
+
+#### **View Tests**
+The `test_views.py` files for `users` and `dashboard` test:
+- **Authenticated Access**:
+  - Ensures pages like the dashboard and mood history are inaccessible to unauthenticated users.
+  - Confirms appropriate redirection to the login page.
+- **Data Integrity**:
+  - Tests that views correctly fetch and render mood data.
+  - Ensures JSON endpoints provide accurate data for frontend visualizations.
+- **Template Rendering**:
+  - Confirms views render the correct templates for each feature.
+
+#### **JavaScript Tests**
+Tests ensure dynamic frontend functionality works seamlessly:
+- Alert messages disappear after the specified timeout.
+- Modals are populated with the correct mood details for editing and deletion.
+
+---
+
+### **Running the Tests**
+
+#### **Python Tests**
+Run all Python tests using:
+```
+python manage.py test
+```
+This command runs tests for models, views, and forms to ensure backend functionality.
+
+#### **JavaScript Tests**
+Run JavaScript tests with Jest:
 ```
 npx jest
 ```
-
-It's important to keep in mind that 
-- The JavaScript logic in this project is minimal and non-complex (e.g., message timeouts and modal data handling).
-- Manual testing in the browser covers all JavaScript functionality and ensures its reliability. The `D3js` JavaScript file's goal is only to render the calendar in the `dashboard` section. This is also verified manually by oberving the rendering and tweaking the code to adjust output.
-- The primary focus of this project is on backend functionality and Python-based tests.
-
 ### Manual Testing
+In addition to automated tests, manual testing was conducted to verify:
 
-In addition to automated tests, manual testing was performed to ensure:
+- Correct rendering of forms and components on various browsers (Chrome, Firefox, Safari).
+- Proper validation and error messages for invalid inputs.
+- User interactions, such as modal triggers and notifications, work seamlessly.
 
-- Proper form rendering and validation.
-- Correct error messages for invalid inputs.
-- Seamless user experience on both desktop and mobile devices.
+#### Browsers Tested
 
-Future Enhancements
-- Adding tests for edge cases, such as invalid email formats and weak passwords.
-- Expanding test coverage for additional user scenarios.
+- Google Chrome (Desktop & Mobile)
+- Mozilla Firefox
+- Safari (iPhone & Mac)
+ 
+#### Devices Tested
+- Desktop (Windows, macOS)
+- Mobile (Android, iOS)
+- Tablets (iPad)
 
+### Future Enhancements
 
-
-
+- Increase test coverage for edge cases, such as network failures and invalid input formats.
+- Automate browser testing with tools like Selenium or Cypress.
+- Add performance testing for large datasets, particularly for calendar and history views.
 
 ## Technologies Used
 
