@@ -25,8 +25,7 @@ class ProfileUpdateView(UpdateView):
     model = User
     form_class = ProfileUpdateForm
     template_name = "users/profile_update.html"
-    success_url = "/dashboard/"  # Replace with your desired redirect URL
-
+    success_url = "/dashboard/" 
     def get_object(self):
         return self.request.user
 
@@ -34,4 +33,4 @@ class ProfileUpdateView(UpdateView):
 class CustomPasswordChangeView(PasswordChangeView):
     form_class = StyledPasswordChangeForm
     template_name = "users/password_change.html"
-    success_url = reverse_lazy("dashboard:dashboard_home")  # Adjust this to your dashboard's name
+    success_url = reverse_lazy("dashboard:dashboard_home") 

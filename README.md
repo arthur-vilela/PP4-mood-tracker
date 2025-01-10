@@ -207,4 +207,5 @@ The application will be accessible on port `8000` at:
 
 ## Credits
 
-https://forum.bootstrapstudio.io/
+https://forum.bootstrapstudio.io/ Tips and problems solving with Bootstrap styling.
+https://pythonacademy.com.br/blog/como-criar-middlewares-no-django Instructions to create the middleware that solved the issue with dark theme not being fully applied on login.
