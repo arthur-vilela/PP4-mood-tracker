@@ -15,13 +15,75 @@ The project theme was free to choose, and I opted for mood tracking because it's
 The application is intended for the general public, particularly individuals seeking to improve their mental health through self-reflection. Users can benefit from a visual overview of their emotional trends and the ability to revisit older entries.
 ___
 
+## **UX**
+
+### **Wireframes**
+Wireframes were created during the planning phase to guide the design and layout of the application.
+
+
+  ![Wireframe Homepage](docs/wireframes-mobile.png)
+
+### **Responsive Design**
+The application is mobile-friendly and adjusts to different screen sizes to ensure accessibility and usability for a wide range of users.
+
+#### **Implementation**
+1. **Frontend**:
+   - **Bootstrap Grid System**:  
+     The app uses Bootstrap's grid system to ensure consistent layouts across devices, enabling components to adjust dynamically to the screen size.
+   - **Media Queries**:  
+     Custom media queries provide additional styling for both small and large screens, enhancing the user interface's adaptability.
+
+2. **Integration**:
+   - **Navbar**:  
+     - Collapses into a hamburger menu on smaller screens for easier navigation.  
+     - Expands fully on larger screens for accessibility.  
+   - **Forms**:  
+     - Inputs, buttons, and text areas are sized appropriately for touch interfaces on mobile devices.  
+   - **Tables**:  
+     - Adjust column widths and enable horizontal scrolling for smaller screens.
+
+#### **Testing**
+The responsive design was thoroughly tested on various devices and browsers to ensure seamless performance:
+- **Devices**:
+  - Mobile phones (e.g., iPhone, Pixel 7 Pro)
+  - Tablets (e.g., Samsumg Galaxy Tab)
+  - Desktop computers
+- **Browsers**:
+  - Google Chrome
+  - Mozilla Firefox
+  - Safari
+  - Microsoft Edge
+
+---
+
+### **User Experience Goals**
+The application is designed with the following goals in mind:
+
+1. **Accessibility**:
+   - Text is legible on all devices.
+   - Buttons and clickable elements are large enough for touch interfaces.
+   - Navigation is simple and intuitive.
+   - Minimalistic color palette insures great contrast.
+
+2. **Consistency**:
+   - Maintain a uniform look and feel across all pages.
+   - Responsive layouts ensure the app looks professional on all screen sizes.
+
+3. **Ease of Use**:
+   - Ensure forms are easy to complete.
+   - Allow users to navigate quickly between different sections (e.g., Dashboard, Settings, Mood History).
+
+4. **Aesthetic Appeal**:
+   - Bootstrap aesthetic are simple, but familiar to most users, making navigation through the website more intuitive.
+   - Minimalistic design to avoid overwhelming the user.
+
+
 ## **Features**
 
 ### **Mood Logging**
 Users can log daily moods along with optional notes and actions.
 
-
-
+![Screenshot of add mood entry page on mobile](docs/screenshot-mobile-add-mood.jpg)
 #### **Implementation**
 1. **Frontend**:
    - The mood entry page provides a user-friendly form where users can:
@@ -64,11 +126,15 @@ Users can log daily moods along with optional notes and actions.
 ---
 
 ### **Visual Calendar**
-A calendar on the dashboard provides a color-coded overview of logged moods.
+A calendar on the dashboard provides a color-coded overview of logged moods. Since the user can log more than one mood entry per day, the calendar displays matching color of the most common mood that day or, in case there is an equal number of each mood type entries per day, the color of the first logged mood is displayed.
+
+  ![Screenshot of the dashboard on mobile](docs/screenshot-mobile-dashboard.jpg)
+
+  ![Screenshot of the mood calendar](docs/screenshot-mood-calendar.jpg)
 
 #### **Implementation**
 1. **Frontend**:
-   - The calendar is dynamically rendered using **D3.js** to display an SVG element for each month.
+   - The calendar is dynamically rendered using **D3.js** to display an **SVG** element for each month.
    - Each cell represents a day and is color-coded based on the most frequent mood logged for that day.
    - A legend provides a visual guide for mood colors.
 
@@ -84,6 +150,8 @@ A calendar on the dashboard provides a color-coded overview of logged moods.
 
 ### **History Review**
 Users can revisit older entries through an accordion-style mood history page.
+
+  ![Screenshot of add mood entry page on mobile](docs/screenshot-mobile-mood-history.jpg)
 
 #### **Implementation**
 1. **Frontend**:
@@ -102,7 +170,9 @@ Users can revisit older entries through an accordion-style mood history page.
 ---
 
 ### **Dark Mode**
-A toggle allows users to switch between light and dark themes.
+In the **Settings** page, a toggle allows users to switch between light and dark themes.
+
+  ![Screenshot of the dashboard page on mobile with dark theme on](docs/screenshot-mobile-dark-theme.jpg)
 
 #### **Implementation**
 1. **Frontend**:
@@ -123,6 +193,8 @@ A toggle allows users to switch between light and dark themes.
 
 #### **Overview**
 The Daily Reminder Email feature ensures that users who opt-in receive a notification email at 20:00 UTC, reminding them to log their mood in the app. This feature is designed to help users maintain consistent mood tracking and make the most of the app's functionality.
+
+  ![Screenshot of the settings page](docs/screenshot-mobile-settings.jpg)
 
 ---
 
@@ -168,7 +240,13 @@ The Daily Reminder Email feature ensures that users who opt-in receive a notific
 ---
 
 ### **User Profile Management**
-Users can update their username, email, and password.
+
+From the **Settings** page, users can click on a link to **change password** or **update profile**. The user is then taken to the respective page where they update their account information.
+
+  ![Screenshot of password change page on mobile](docs/screenshot-mobile-change-password.jpg)
+
+  ![Screenshot of user update page on mobile](docs/screenshot-mobile-edit-profile.jpg)
+
 
 #### **Implementation**
 1. **Frontend**:
@@ -185,21 +263,7 @@ Users can update their username, email, and password.
 
 ---
 
-### **Responsive Design**
-The application is mobile-friendly and adjusts to different screen sizes.
-
-#### **Implementation**
-1. **Frontend**:
-   - Bootstrap's grid system ensures consistent layouts across devices.
-   - Media queries provide additional styling for small and large screens, optimizing the user interface.
-
-2. **Integration**:
-   - The design is tested on a variety of devices and browsers to ensure accessibility.
-   - Elements like the navbar, forms, and tables adjust seamlessly to smaller screens.
-
----
-
-## Agile Development Process
+## **Agile Development Process**
 
 ### Project Management
 The development followed an Agile methodology with:
@@ -317,7 +381,7 @@ Each Epic was defined as a broad function and separated into to well-defined use
       - AC2: The admin can delete inappropriate or duplicate entries.
       - AC3: Changes made by the admin are logged for accountability.
 
-## Models
+## **Models**
 
 ### ERD
 
@@ -730,7 +794,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
     - Additional validation layers for email notifications and user inputs.
 
 
-## Technologies Used
+## **Technologies Used**
 
 | Technology                               | Use                                                                                                           |
 |------------------------------------------|---------------------------------------------------------------------------------------------------------------|
@@ -745,7 +809,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
 | [D3js](https://d3js.org/)                | Rendering the calendar                                                                              |
 | [RandomKeygen](https://randomkeygen.com/)| Generating secure random keys |
 
-## Deployment to Heroku
+## **Deployment to Heroku**
 
  Go to Heroku.com and implement the following steps in this order:
  1. On the home page, click 'New' and in the dropdown, click on 'Create a new app'.
@@ -778,7 +842,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
  4. Click 'View' to launch the new app.
  5. Link to deployed site is: https://pp4-mood-tracker-9f61d134c09f.herokuapp.com/
 
-## Setup
+## **Setup**
 
 Follow these steps to set up and run the project in Gitpod:
 
@@ -806,7 +870,7 @@ python manage.py runserver
 The application will be accessible on port `8000` at:
 `https://<workspace-url>/8000`
 
-## Credits
+## **Credits**
 
 https://forum.bootstrapstudio.io/ Tips and problems solving with Bootstrap styling.
 https://pythonacademy.com.br/blog/como-criar-middlewares-no-django Instructions to create the middleware that solved the issue with dark theme not being fully applied on login.
