@@ -234,16 +234,6 @@ The Daily Reminder Email feature ensures that users who opt-in receive a notific
    - The workflow uses a secure `SECRET_TOKEN` stored in the repository's secrets to authenticate the request.
 
 ---
-#### Testing the Feature
-1. Enable email notifications via the Settings page.
-2. Verify the reminder email is sent:
-- Check your inbox at the scheduled time.
-- Test the endpoint manually with curl
-   ```
-   curl -X POST https://pp4-mood-tracker-20082cf10f44.herokuapp.com/dashboard/send-reminders/ \
-     -H "X-SECRET-TOKEN: your_secret_token"
-   ```
----
 
 ### **User Profile Management**
 
@@ -406,13 +396,6 @@ Inherits fields like username, email, and password from Django’s built-in User
 
 Additional fields or methods could include custom validation or integration with related models.
 
-#### Tests Performed
-- Validates authentication functionality, including registration, login, and logout.
-- Ensures secure password management with built-in hashing.
-- Tests CRUD operations for updating user profiles (username, email, password).
-
----
-
 ### Mood Model
 
 The Mood model represents user-submitted mood entries and includes fields to capture details about their emotional state on specific dates. This model allows users to document their feelings, actions taken, and additional notes for reflection or tracking purposes.
@@ -437,24 +420,6 @@ The model is registered in the Django admin panel with the following enhancement
 - Filter Options: mood_type and date for targeted filtering.
 - Display Configuration: Shows user, date, mood_type, and created_at for each entry.
 
-#### Tests
-
-The tests ensure the correct functionality of the `Mood` model and its integration with the database. This includes validating field constraints, choice-based options, and timestamp generation.
-
-
-1. **Model Creation Test**:
-   - Created multiple mood entries for a test user to verify that all fields save and display correctly.
-   - Ensured `created_at` and `updated_at` timestamps were automatically generated.
-
-2. **Validation Test**:
-   - Confirmed that `mood_type` accepts only predefined choices and rejects invalid inputs.
-
-3. **Admin Panel Check**:
-   - Verified that the `Mood` model appears in the admin panel with filters, search, and display functionality as configured.
-
----
-
-
 ### Notification Settings Model
 
 Purpose: Manages user preferences for email notifications, allowing users to toggle reminders for mood logging and specify the notification time.
@@ -469,14 +434,6 @@ Purpose: Manages user preferences for email notifications, allowing users to tog
 |`notify_by_email` | Boolean indicating if reminders are enabled.|
 |`notify_time`| Specifies the time for sending notifications.|
 
-#### Tests Performed
-
-- Validates the default values for `notify_by_email` and `notify_time`.
-- Tests CRUD operations for updating notification settings.
-- Ensures reminders are sent only if `notify_by_email` is true.
-
----
-
 ### User Preferences Model
 
 Purpose: Tracks user preferences for application settings, such as enabling dark mode for the user interface.
@@ -486,11 +443,6 @@ Purpose: Tracks user preferences for application settings, such as enabling dark
 |-------|-------------|
 |`user` | Links preferences to a specific user.|
 |`dark_mode_enabled`| Boolean indicating if dark mode is active.|
-
-#### Tests Performed
-- Ensures that preferences are correctly linked to a user.
-- Validates toggling dark mode and its persistence across sessions.
-- Tests default preference creation when a user account is initialized.
 
 ## **Testing**
 
@@ -693,9 +645,7 @@ This subsection links the project's core features to their respective automated 
 ### Manual Testing
 In addition to automated tests, manual testing was conducted to verify:
 
-## Manual Testing
-
-### Functional Tests
+#### **Functional Tests**
 
 | **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
 |--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -711,7 +661,7 @@ In addition to automated tests, manual testing was conducted to verify:
 
 ---
 
-### Responsiveness Tests
+#### **Responsiveness Tests**
 
 | **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
 |--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -721,7 +671,7 @@ In addition to automated tests, manual testing was conducted to verify:
 
 ---
 
-### Accessibility Tests
+#### **Accessibility Tests**
 
 | **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
 |--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -732,7 +682,7 @@ In addition to automated tests, manual testing was conducted to verify:
 
 ---
 
-### User Flow Tests
+#### **User Flow Tests**
 
 | **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
 |--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
@@ -877,20 +827,48 @@ Ensuring the security of user data and the application’s integrity is a top pr
     - Additional validation layers for email notifications and user inputs.
 
 
+## **Bugs**
+
+Below are the known bugs and issues encountered during the project development, along with their resolutions:
+
+| **Bug**                                         | **Issue**                                                                                                                                                           | **Cause**                                                                                                  | **Resolution**                                                                                                                                      |
+|-------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Dark Mode Partially Applied After Logging Back In** | After logging out with dark mode enabled, logging back in caused the website to display a partially applied dark theme. The settings page form remained white.    | `dark_theme` preference was not properly synced between the session and the database during login.         | Implemented a middleware to synchronize the `dark_theme` preference with the session during every user request.                                      |
+| **"Successfully Logged In" Message Appears on Settings Page** | The "Successfully logged in" message was displayed on the settings page when it was first opened in a session.                                                    | Django's `messages` framework carried over the login success message to subsequent views.                  | Cleared all messages in the settings view before rendering the page.                                                                                 |
+| **Reverse URL Not Found During Tests**          | Several tests failed with the error `NoReverseMatch: Reverse for 'mood_chart' not found`.                                                                         | Missing `mood_chart` and `notification_settings` routes in `urls.py`.                                     | Added the missing URL patterns to `dashboard/urls.py`.                                                                                               |
+| **Custom User Model Not Recognized in Tests**   | Tests failed with the error `AttributeError: Manager isn't available; 'auth.User' has been swapped for 'users.CustomUser'`.                                       | Tests referenced the default `User` model instead of the custom `CustomUser`.                             | Updated tests to use `get_user_model()` to dynamically fetch the correct user model.                                                                 |
+| **JavaScript Error on Dashboard for Missing Modal** | A `TypeError: Cannot read properties of null (reading 'addEventListener')` error occurred on pages where the modal element did not exist.                         | The JavaScript code assumed the modal always existed, leading to errors on pages without it.              | Added a null check for modal-related elements before attaching event listeners.                                                                       |
+| **Alert Messages Timeout Not Working Consistently** | The timeout for dismissing alert messages after 5 seconds worked during manual testing but failed in automated tests.                                             | The test environment did not properly simulate the DOM and `setTimeout` behavior.                          | Installed `jest-environment-jsdom` and rewrote tests using `jest.useFakeTimers()` to simulate the timeout.                                           |
+| **Error When Running Heroku Scheduler for Notifications** | The Heroku Scheduler triggered notification jobs successfully but was restricted to 10-minute intervals, preventing user-specific notification times.              | Scheduler limitations in Heroku's free tier.                                                              | Standardized notifications to be sent at a fixed time (8:00 PM) for all users.                                                                       |
+| **Email Reminder Not Sending**                  | Emails were not being sent despite the Heroku Scheduler being configured correctly.                                                                                | The `send_reminders` management command lacked an `os` import for fetching environment variables.          | Added the `import os` statement to the `send_reminders.py` file.                                                                                     |
+| **Calendar Colors Not Rendering**               | The mood calendar displayed blank cells instead of color-coded days after modifications to the `mood_calendar_view`.                                              | Changes to the JSON response format broke the D3.js script that rendered the calendar.                     | Reverted the `mood_calendar_view` to its previous working format to maintain compatibility with the frontend script.                                  |
+| **Lighthouse SEO Score**                        | The Lighthouse tool flagged the site for missing meta descriptions, resulting in an SEO score of 90.                                                              | The `<head>` section of the `base.html` template did not include a meta description.                       | Added a `<meta name="description" content="A mood tracking application for recording and analyzing emotional patterns.">` tag to the `<head>` section. |
+| **CSRF Token Missing in JavaScript**            | An unauthenticated user opening the homepage encountered a console error: `SyntaxError: Unexpected token '<', "<!DOCTYPE "... is not valid JSON`.                  | The JavaScript file responsible for fetching data from `/dashboard/mood-calendar/` was not handling unauthenticated requests properly.            | Wrapped the fetch logic in a try-catch block and added an error handler to redirect users to the login page if the request fails.                    |
+| **Form Disappearing with `crispy` Filter**      | Applying the `crispy` filter to `{{ form.as_p }}` in the mood entry template caused the form to disappear.                                                        | The `crispy` template tag was not correctly applied to the form.                                           | Updated the form to use `{{ form|crispy }}` instead of `{{ form.as_p }}` for rendering.                                                               |
+| **Test Failures Due to View and URL Changes**   | Tests failed due to outdated view and URL names after updates to the application.                                                                                 | View names in `reverse()` calls and URL configurations were not updated in test files.                     | Updated test cases to match the current view and URL names.                                                                                           |
+| **Notification Settings Test Failing**          | A test for the notification settings feature failed due to the unused `notify_time` field in the `NotificationSettings` model.                                     | The test was asserting the value of `notify_time`, which is not implemented in the current project.        | Modified the test to validate only the `notify_by_email` field.                                                                                      |
+| **Calendar Fetch Error for Unauthenticated Users** | An unauthenticated user opening the homepage encountered a fetch error when the calendar tried to load.                                                           | The `/dashboard/mood-calendar/` endpoint required authentication, causing the fetch request to fail.       | Added a check to ensure calendar data is fetched only for authenticated users and redirected unauthenticated users to the login page.                |
+| **JSHint Undefined Variable Warnings**          | JSHint flagged warnings for undefined variables when analyzing the `mood_calendar.js` script.                                                                     | The script used D3.js, which is loaded from an external source, and JSHint could not recognize its context. | Updated JSHint configuration to ignore D3.js-related warnings during linting.                                                                        |
+
+
+
 ## **Technologies Used**
 
-| Technology                               | Use                                                                                                           |
-|------------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| HTML                                     | Structure the webpage.                                                                                        |
-| CSS                                      | Style and add layout to the project.                                                                          |
-| JavaScript                               | Make the website interactive.                                                                                 |
-| Django                                   | A Python-based web framework used to develop the backend, manage server-side logic, and handle routing.       |
-| [Heroku](https://www.heroku.com/)        | Cloud platform used for deploying, managing, and hosting the live version of the website.                     |
-| [GitHub](https://github.com/)            | Version control platform used to store the project’s repository, collaborate on code, and manage deployments. |  
-| [dbdiagram.io](https://dbdiagram.io/home)| ERD creation                                                                                                  |
-| [Jest](https://jestjs.io/)               | Unit testing JavaScript functions                                                                             |
-| [D3js](https://d3js.org/)                | Rendering the calendar                                                                              |
-| [RandomKeygen](https://randomkeygen.com/)| Generating secure random keys |
+| Technology                                          | Use                                                                                                           |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| HTML                                                | Structure the webpage.                                                                                        |
+| CSS                                                 | Style and add layout to the project.                                                                          |
+| JavaScript                                          | Make the website interactive.                                                                                 |
+| Django                                              | A Python-based web framework used to develop the backend, manage server-side logic, and handle routing.       |
+| [Heroku](https://www.heroku.com/)                   | Cloud platform used for deploying, managing, and hosting the live version of the website.                     |
+| [GitHub](https://github.com/)                       | Version control platform used to store the project’s repository, collaborate on code, and manage deployments. |  
+| [dbdiagram.io](https://dbdiagram.io/home)           | ERD creation                                                                                                  |
+| [Jest](https://jestjs.io/)                          | Unit testing JavaScript functions                                                                             |
+| [D3js](https://d3js.org/)                           | Rendering the calendar                                                                                        |
+| [RandomKeygen](https://randomkeygen.com/)           | Generating secure random keys                                                                                 |
+| [ChatGPT](https://chatgpt.com/)                     | Used for analysing logs and error messages, improving documentation, and brainstorming project ideas.         |
+| [Favicon.io](https://favicon.io/favicon-converter/) | Create favicon files.                                                                                         |
+| [Balsamiq](https://balsamiq.com/)                   | Used to create wireframes and design the structure of the website.                                            | 
 
 ### Backend Optimizations
 
@@ -981,5 +959,10 @@ The application will be accessible on port `8000` at:
 
 ## **Credits**
 
-https://forum.bootstrapstudio.io/ Tips and problems solving with Bootstrap styling.
-https://pythonacademy.com.br/blog/como-criar-middlewares-no-django Instructions to create the middleware that solved the issue with dark theme not being fully applied on login.
+[Bootstrap Studio](https://forum.bootstrapstudio.io/) | Tips and problems solving with Bootstrap styling.
+
+[Python Academy](https://pythonacademy.com.br/blog/como-criar-middlewares-no-django) | Instructions to create the middleware that solved the issue with dark theme not being fully applied on login.
+
+[Stack Overflow](https://stackoverflow.com/) | Solved several doubts regarding Django views, Bootstrap customization, and testing.
+
+[ChatGPT](https://chatgpt.com/) | Helped me understand several terminal outputs and debug messages, beyond helping with Readme styling and organization.
