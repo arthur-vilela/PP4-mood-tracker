@@ -2,23 +2,25 @@
 
 ## Description
 A Django-based web application for tracking moods, allowing users to record their emotional state, actions, and analyze patterns over time.
-## Overview
+### Overview
 
 Mood Tracker is a portfolio project developed as part of the Full Stack Development course curriculum from Code Institute. This application was created with the goal of providing a simple, user-friendly tool for individuals to track their emotional responses over time. It offers insights that can help users better understand themselves or serve as a supplemental tool in therapy sessions.
 
-## Motivation
+### Motivation
 
 The project theme was free to choose, and I opted for mood tracking because it's a topic close to my heart and an essential one for society. The app aims to empower individuals to log their moods, reflect on past experiences, and foster emotional awareness.
 
-## Target Audience
+### Target Audience
 
 The application is intended for the general public, particularly individuals seeking to improve their mental health through self-reflection. Users can benefit from a visual overview of their emotional trends and the ability to revisit older entries.
 ___
 
-## Features
+## **Features**
 
 ### **Mood Logging**
 Users can log daily moods along with optional notes and actions.
+
+
 
 #### **Implementation**
 1. **Frontend**:
@@ -202,11 +204,24 @@ The application is mobile-friendly and adjusts to different screen sizes.
 ### Project Management
 The development followed an Agile methodology with:
 
-- User Stories: Created for all features and mapped to Epics.
-- Kanban Board: Managed tasks, priorities, and timelines on GitHub Projects.
+- **`Epics`** - Each Epic was defined as a broad function. They were created using GitHub's Milestone function to attach them to user stories and track development.
+
+  ![Screenshot of GitHub Milestones page displaying Epics](docs/screenshot-github-epics.png)
+
+- `User Stories`: Created for all features, detailing Epics into concrete completion criteria.
+
+  - Stories had different priority level, similar to MoSCoW method, with `must-have`,`should-have`, `could-have`. There were no `won't-have` labelled user stories in this project.
+  - Stories had defined acceptance criteria to fulfill the story either from an Admin or User perspective.
+
+  ![Screenshot of GitHub Projects page displaying user stories in a board](docs/screenshot-github-user-story.png)
+
+
+- `Kanban Board`: Managed tasks, priorities, and timelines on GitHub Projects.
+
+  ![Screenshot of GitHub Projects page displaying user stories in a board](docs/screenshot-github-projects.png)
 
 ### Epics and User Stories
-Each feature corresponds to well-defined user stories:
+Each Epic was defined as a broad function and separated into to well-defined user stories:
 
 - #### **Epic: User Account Features**
    *Purpose:*  Create, edit and control user account and its configuration.
