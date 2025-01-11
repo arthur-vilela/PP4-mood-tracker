@@ -23,8 +23,13 @@ class MoodChartViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         mood_data = response.json()
-        self.assertEqual(mood_data.get("labels"), ["2025-01-01", "2025-01-02"])
-        self.assertEqual(mood_data.get("data"), ["Happy", "Sad"])
+
+        # Verify the JSON structure and values
+        expected_data = {
+            "2025-01-01": "Happy",
+            "2025-01-02": "Sad"
+        }
+        self.assertEqual(mood_data, expected_data)
 
     def test_mood_chart_view_with_no_moods(self):
         # Test the view when there are no mood entries
@@ -32,8 +37,9 @@ class MoodChartViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         mood_data = response.json()
-        self.assertEqual(mood_data["labels"], [])
-        self.assertEqual(mood_data["data"], [])
+
+        # Expect an empty dictionary when no moods are available
+        self.assertEqual(mood_data, {})
 
     def test_mood_chart_view_with_unauthenticated_user(self):
         # Logout the authenticated user
@@ -44,15 +50,19 @@ class MoodChartViewTest(TestCase):
         self.assertIn("/accounts/login/", response.url)
 
     def test_mood_chart_view_with_invalid_mood_type(self):
-        # Create a mood entry with a valid-length but invalid mood type
+        # Create a mood entry with an invalid mood type
         invalid_mood = Mood.objects.create(user=self.user, date=date(2025, 1, 3), mood_type="Invalid")
-        
+
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
         mood_data = response.json()
-        # Ensure the invalid mood type is still included in the response
-        self.assertIn("Invalid", mood_data["data"])
+
+        # Ensure the invalid mood type is included in the response
+        expected_data = {
+            "2025-01-03": "Invalid"
+        }
+        self.assertEqual(mood_data, expected_data)
 
 
 class MoodHistoryViewTest(TestCase):

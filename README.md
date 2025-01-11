@@ -507,7 +507,7 @@ This subsection links the project's core features to their respective automated 
 - **Automated Tests**:
   - **View Tests**:
     - Verified that the mood calendar endpoint returns the correct JSON structure (`labels`, `data`).
-    - Ensured the view handles cases with no mood entries gracefully.
+    - Ensured the view handles well cases with no mood entries.
     - Tested that only authenticated users can access the calendar data.
   - **JavaScript Tests**:
     - Checked that the D3.js script renders the calendar dynamically based on the JSON data.
