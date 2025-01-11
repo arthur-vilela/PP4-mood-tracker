@@ -1,6 +1,6 @@
-# Mood Tracker
+# **Mood Tracker**
 
-## Description
+## **Description**
 A Django-based web application for tracking moods, allowing users to record their emotional state, actions, and analyze patterns over time.
 ### Overview
 
@@ -21,7 +21,7 @@ ___
 Wireframes were created during the planning phase to guide the design and layout of the application.
 
 
-  ![Wireframe Homepage](docs/wireframes-mobile.png)
+  ![Wireframes from different website pages](docs/wireframes-mobile.png)
 
 ### **Responsive Design**
 The application is mobile-friendly and adjusts to different screen sizes to ensure accessibility and usability for a wide range of users.
@@ -77,6 +77,12 @@ The application is designed with the following goals in mind:
    - Bootstrap aesthetic are simple, but familiar to most users, making navigation through the website more intuitive.
    - Minimalistic design to avoid overwhelming the user.
 
+
+### Favicon  
+
+The favicon reflects the project's core functionality: a calendar emoji, eluding to the daily task of registering one's day and revisiting it.
+
+![Favicon](static/favicon/android-chrome-192x192.png)  
 
 ## **Features**
 
@@ -486,7 +492,7 @@ Purpose: Tracks user preferences for application settings, such as enabling dark
 - Validates toggling dark mode and its persistence across sessions.
 - Tests default preference creation when a user account is initialized.
 
-## **Tests**
+## **Testing**
 
 The project includes automated tests to ensure the functionality of all key features, including user authentication, mood tracking, and notification settings. Comprehensive tests were written for models, views, forms, and JavaScript functionality. The application has been tested manually and through automation to ensure robustness and a seamless user experience.
 
@@ -703,6 +709,26 @@ In addition to automated tests, manual testing was conducted to verify:
 - Correct rendering of forms and components on various browsers (Chrome, Firefox, Safari).
 - Proper validation and error messages for invalid inputs.
 - User interactions, such as modal triggers and notifications, work seamlessly.
+
+### Validator testing
+
+#### HTML W3C Validator
+
+#### CSS W3C Validator
+
+![Screenshot of W3C CSS validator showing no errors](docs/validator-css.png)
+- No errors found.
+
+#### JSHint
+
+- No errors shown.
+
+![Screenshot of JSHint result showing no warnings](docs/jsHint.png)
+
+#### Lighthouse
+
+- Lighthouse in devtools indicated a high accessibility score.
+- Performance scores varied minimally when analysing  the `mobile` or `desktop` versions.
 
 #### Browsers Tested
 

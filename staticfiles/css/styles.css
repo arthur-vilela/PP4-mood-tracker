@@ -7,7 +7,8 @@
 
 /* Navbar */
 .dark-theme .navbar {
-    background-color: #343a40 !important; /* Dark gray */
+    background-color: #343a40 !important;
+    /* Dark gray */
     color: #f8f9fa !important;
 }
 
@@ -16,7 +17,8 @@
 }
 
 .dark-theme .navbar .nav-link:hover {
-    color: #adb5bd; /* Lighter gray */
+    color: #adb5bd;
+    /* Lighter gray */
 }
 
 /* Footer */
@@ -52,7 +54,8 @@
 .dark-theme form input,
 .dark-theme form select,
 .dark-theme form textarea {
-    background-color: #6c757d; /* Darker input fields */
+    background-color: #6c757d;
+    /* Darker input fields */
     color: #f8f9fa;
     border: 1px solid #495057;
 }
@@ -60,24 +63,31 @@
 .dark-theme form input:focus,
 .dark-theme form select:focus,
 .dark-theme form textarea:focus {
-    border-color: #adb5bd; /* Lighter gray on focus */
+    border-color: #adb5bd;
+    /* Lighter gray on focus */
     box-shadow: 0 0 0 0.2rem rgba(173, 181, 189, 0.25);
 }
 
 /* Alert Messages */
 .alert-danger {
-    background-color: #f8d7da; /* Light red background */
-    color: #721c24; /* Dark red text */
+    background-color: #f8d7da;
+    /* Light red background */
+    color: #721c24;
+    /* Dark red text */
 }
 
 .alert-warning {
-    background-color: #fff3cd; /* Light yellow background */
-    color: #856404; /* Dark yellow text */
+    background-color: #fff3cd;
+    /* Light yellow background */
+    color: #856404;
+    /* Dark yellow text */
 }
 
 .alert-success {
-    background-color: #d4edda; /* Light green background */
-    color: #155724; /* Dark green text */
+    background-color: #d4edda;
+    /* Light green background */
+    color: #155724;
+    /* Dark green text */
 }
 
 /*----------------------- Dashboard ------------------ */
@@ -101,13 +111,16 @@ svg {
 
 .calendar-div {
     display: flex;
-    justify-content: center; /* Center the SVG horizontally */
+    justify-content: center;
+    /* Center the SVG horizontally */
     align-items: center;
 }
 
 .calendar-div svg {
-    max-width: 100%; /* Make SVG responsive to parent */
-    height: auto; /* Maintain aspect ratio */
+    max-width: 100%;
+    /* Make SVG responsive to parent */
+    height: auto;
+    /* Maintain aspect ratio */
 }
 
 /* Default horizontal legend */
@@ -126,46 +139,81 @@ svg {
     height: 20px;
     display: inline-block;
     margin-left: 15px;
-    border-radius: 4px; /* give a rounded look */
+    border-radius: 4px;
+    /* give a rounded look */
 }
 
 /* Specific rules for each mood */
 .legend-item.happy {
-    background-color: #FFD700; /* Gold */
+    background-color: #FFD700;
+    /* Gold */
 }
 
 .legend-item.sad {
-    background-color: #FF4500; /* OrangeRed */
+    background-color: #FF4500;
+    /* OrangeRed */
 }
 
 .legend-item.anxious {
-    background-color: #9370DB; /* MediumPurple */
+    background-color: #9370DB;
+    /* MediumPurple */
 }
 
 .legend-item.angry {
-    background-color: #FF6347; /* Tomato */
+    background-color: #FF6347;
+    /* Tomato */
 }
 
 .legend-item.calm {
-    background-color: #87CEFA; /* LightSkyBlue */
+    background-color: #87CEFA;
+    /* LightSkyBlue */
 }
 
 .legend-item.excited {
-    background-color: #32CD32; /* LimeGreen */
+    background-color: #32CD32;
+    /* LimeGreen */
 }
 
 .legend-item.tired {
-    background-color: #A9A9A9; /* DarkGray */
+    background-color: #A9A9A9;
+    /* DarkGray */
 }
 
 /*----------------------- Mood History ------------------ */
-.badge.happy { background-color: #FFD700; }
-.badge.sad { background-color: #FF4500; }
-.badge.anxious { background-color: #9370DB; }
-.badge.angry { background-color: #FF6347; }
-.badge.calm { background-color: #87CEEB; }
-.badge.excited { background-color: #32CD32; }
-.badge.tired { background-color: #A9A9A9; }
+.badge.happy {
+    background-color: #FFD700;
+    color: #121212;
+}
+
+.badge.sad {
+    background-color: #FF4500;
+    color: #121212;
+}
+
+.badge.anxious {
+    background-color: #9370DB;
+    color: #121212;
+}
+
+.badge.angry {
+    background-color: #FF6347;
+    color: #121212;
+}
+
+.badge.calm {
+    background-color: #87CEEB;
+    color: #121212;
+}
+
+.badge.excited {
+    background-color: #32CD32;
+    color: #121212;
+}
+
+.badge.tired {
+    background-color: #A9A9A9;
+    color: #121212;
+}
 
 /* Accordion */
 .dark-theme .accordion-button {
@@ -175,8 +223,8 @@ svg {
 
 .dark-theme .accordion-button::after {
     background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
- }
- 
+}
+
 /* Vertical legend for small screens */
 @media (max-width: 768px) {
     .legend {
