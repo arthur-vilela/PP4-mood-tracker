@@ -117,6 +117,7 @@ svg {
     justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
+    align-items: center;
 }
 
 /* General rule for legend items */
@@ -155,16 +156,6 @@ svg {
 
 .legend-item.tired {
     background-color: #A9A9A9; /* DarkGray */
-}
-
-/* Styling for the legend container */
-.legend {
-    display: flex;
-    flex-wrap: wrap; /* Allow wrapping for smaller screens */
-    gap: 5px; /* Space between legend items */
-    justify-content: center; /* Center align on the page */
-    margin-top: 20px; /* Space above the legend */
-    text-align: center; /* Align text in the center */
 }
 
 /*----------------------- Mood History ------------------ */

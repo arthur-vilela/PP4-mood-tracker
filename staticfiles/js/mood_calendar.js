@@ -1,8 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
     fetch("/dashboard/mood-calendar/")
-        .then((response) => response.json())
+        .then((response) => {
+            // Check if the response is OK and in JSON format
+            const contentType = response.headers.get("content-type");
+            if (response.ok && contentType && contentType.includes("application/json")) {
+                return response.json();
+            } else {
+                throw new Error("Unexpected response. Likely unauthenticated or an error occurred.");
+            }
+        })
         .then((data) => {
-
             const moods = ["Happy", "Sad", "Anxious", "Angry", "Excited", "Calm", "Tired"];
             const colors = d3
                 .scaleOrdinal()
@@ -72,5 +79,5 @@ document.addEventListener("DOMContentLoaded", function () {
                     `translate(${(svg.attr("width") - bbox.width) / 2}, ${(svg.attr("height") - bbox.height) / 2})`
                 );
             });
-        });
+        })
 });

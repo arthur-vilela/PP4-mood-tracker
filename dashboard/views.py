@@ -40,20 +40,23 @@ def dashboard_view(request):
 @login_required
 def mood_calendar_view(request):
     """View to generate data for mood calendar."""
-    moods = Mood.objects.filter(user=request.user)
-    mood_by_date = {}
+    try:
+        moods = Mood.objects.filter(user=request.user)
+        mood_by_date = {}
 
-    # Group moods by date
-    for mood in moods:
-        mood_by_date.setdefault(mood.date, []).append(mood.mood_type)
+        # Group moods by date
+        for mood in moods:
+            mood_by_date.setdefault(mood.date, []).append(mood.mood_type)
 
-    # Determine the most common mood per date
-    calendar_data = {
-        date.strftime('%Y-%m-%d'): Counter(mood_types).most_common(1)[0][0]
-        for date, mood_types in mood_by_date.items()
-    }
+        # Determine the most common mood per date
+        calendar_data = {
+            date.strftime('%Y-%m-%d'): Counter(mood_types).most_common(1)[0][0]
+            for date, mood_types in mood_by_date.items()
+        }
 
-    return JsonResponse(calendar_data)
+        return JsonResponse(calendar_data)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 @login_required
 def mood_history_view(request):
