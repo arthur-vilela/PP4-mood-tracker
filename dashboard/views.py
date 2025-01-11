@@ -49,8 +49,8 @@ def mood_calendar_view(request):
 
     # Determine the most common mood per date
     calendar_data = {
-        date.strftime('%Y-%m-%d'): Counter(mood_types).most_common(1)[0][0]
-        for date, mood_types in mood_by_date.items()
+        "labels": [date.strftime('%Y-%m-%d') for date in mood_by_date.keys()],
+        "data": [Counter(mood_types).most_common(1)[0][0] for mood_types in mood_by_date.values()]
     }
 
     return JsonResponse(calendar_data)

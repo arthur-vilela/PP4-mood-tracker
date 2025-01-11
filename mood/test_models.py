@@ -1,9 +1,10 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from mood.models import Mood, NotificationSettings, UserPreferences
 from datetime import time
 
 # Create your tests here.
+User = get_user_model()
 
 class MoodModelTest(TestCase):
     def setUp(self):

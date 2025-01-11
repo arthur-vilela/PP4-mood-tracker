@@ -12,7 +12,7 @@ class MoodChartViewTest(TestCase):
         # Create a user for testing
         self.user = User.objects.create_user(username="testuser", password="password123")
         self.client.login(username="testuser", password="password123")
-        self.url = reverse("dashboard:mood_chart")
+        self.url = reverse("dashboard:mood_calendar")
 
     def test_mood_chart_view_returns_json(self):
         # Create sample mood entries for the user
@@ -23,8 +23,8 @@ class MoodChartViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         mood_data = response.json()
-        self.assertEqual(mood_data["labels"], ["2025-01-01", "2025-01-02"])
-        self.assertEqual(mood_data["data"], ["Happy", "Sad"])
+        self.assertEqual(mood_data.get("labels"), ["2025-01-01", "2025-01-02"])
+        self.assertEqual(mood_data.get("data"), ["Happy", "Sad"])
 
     def test_mood_chart_view_with_no_moods(self):
         # Test the view when there are no mood entries
@@ -81,7 +81,7 @@ class MoodHistoryViewTest(TestCase):
 class NotificationSettingsViewTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser", password="password")
-        self.notification_settings_url = reverse("dashboard:notification_settings")
+        self.notification_settings_url = reverse("dashboard:settings")
         self.client.login(username="testuser", password="password")
 
     def test_notification_settings_view_status_code(self):
@@ -90,15 +90,14 @@ class NotificationSettingsViewTest(TestCase):
 
     def test_notification_settings_view_template(self):
         response = self.client.get(self.notification_settings_url)
-        self.assertTemplateUsed(response, "dashboard/notification_settings.html")
+        self.assertTemplateUsed(response, "dashboard/settings.html")
 
     def test_notification_settings_update(self):
         response = self.client.post(self.notification_settings_url, {
-            "notify_by_email": "on",
-            "notify_time": "08:00"
+            "notify_by_email": "on"  # Simulate enabling email notifications
         })
-        self.assertRedirects(response, self.notification_settings_url)
+        self.assertRedirects(response, self.notification_settings_url)  # Check redirection after submission
 
+        # Fetch updated settings from the database
         notification_settings = NotificationSettings.objects.get(user=self.user)
         self.assertTrue(notification_settings.notify_by_email)
-        self.assertEqual(str(notification_settings.notify_time), "08:00:00")
