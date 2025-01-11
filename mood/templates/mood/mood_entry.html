@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
 Add Mood Entry
@@ -9,7 +10,7 @@ Add Mood Entry
     <h1 class="text-center">Add a Mood Entry</h1>
     <form method="POST" class="mt-4">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
         <button type="submit" class="btn btn-primary btn-block">Submit</button>
         <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary w-45">Cancel</a>
     </form>

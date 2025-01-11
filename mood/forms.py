@@ -1,6 +1,8 @@
 from django import forms
 from django.utils.timezone import now
 from datetime import timedelta
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
 from .models import Mood
 
 def validate_date_within_two_weeks(value):
@@ -11,7 +13,7 @@ def validate_date_within_two_weeks(value):
 class MoodEntryForm(forms.ModelForm):
     date = forms.DateField(
         initial=now().date,  # Prepopulate with today's date
-        widget=forms.DateInput(attrs={"type": "date"}),  # HTML5 date input
+        widget=forms.DateInput(attrs={"type": "date"}),
         validators=[validate_date_within_two_weeks],
     )
 
