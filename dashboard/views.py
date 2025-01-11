@@ -22,7 +22,7 @@ import calendar
 @login_required
 def dashboard_view(request):
     # Get all moods for the logged-in user
-    moods = Mood.objects.filter(user=request.user).order_by('-date')
+    moods = Mood.objects.filter(user=request.user).select_related('user').order_by('-date')
 
     # Generate a list of unique months with mood entries
     if moods.exists():
@@ -61,7 +61,7 @@ def mood_calendar_view(request):
 @login_required
 def mood_history_view(request):
     """View to display the user's mood history."""
-    moods = Mood.objects.filter(user=request.user).order_by('-date')  # Fetch moods in descending order of date
+    moods = Mood.objects.filter(user=request.user).select_related('user').order_by('-date')  # Fetch moods in descending order of date
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
@@ -69,11 +69,11 @@ def mood_history_view(request):
 def settings_view(request):
     """View to manage user settings."""
     try:
-        notification_settings = NotificationSettings.objects.get(user=request.user)
+        notification_settings = NotificationSettings.objects.select_related('user').get(user=request.user)
     except NotificationSettings.DoesNotExist:
         notification_settings = NotificationSettings.objects.create(user=request.user)
 
-    preferences, created = UserPreferences.objects.get_or_create(user=request.user)
+    preferences, created = UserPreferences.objects.select_related('user').get_or_create(user=request.user)
 
     if request.method == "POST":
         notify_by_email = request.POST.get("notify_by_email", "off") == "on"
@@ -117,7 +117,7 @@ def trigger_send_reminders(request):
 
 @login_required
 def edit_mood_view(request, pk):
-    mood = get_object_or_404(Mood, pk=pk, user=request.user)
+    mood = get_object_or_404(Mood.objects.select_related('user'), pk=pk, user=request.user)
     if request.method == "POST":
         form = MoodForm(request.POST, instance=mood)
         if form.is_valid():
@@ -133,7 +133,7 @@ def edit_mood_view(request, pk):
 
 @login_required
 def delete_mood_view(request, pk):
-    mood = get_object_or_404(Mood, pk=pk, user=request.user)
+    mood = get_object_or_404(Mood.objects.select_related('user'), pk=pk, user=request.user)
     mood.delete()
     messages.success(request, "Mood entry deleted successfully!")
     return redirect("dashboard:mood_history")

@@ -693,9 +693,55 @@ This subsection links the project's core features to their respective automated 
 ### Manual Testing
 In addition to automated tests, manual testing was conducted to verify:
 
-- Correct rendering of forms and components on various browsers (Chrome, Firefox, Safari).
-- Proper validation and error messages for invalid inputs.
-- User interactions, such as modal triggers and notifications, work seamlessly.
+## Manual Testing
+
+### Functional Tests
+
+| **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
+|--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
+| User can log a new mood entry              | Open the "Add Mood Entry" page, fill out the form, and submit               | Mood entry is saved and appears on the dashboard and history pages                                      | Pass        |
+| User can edit a mood entry                 | Open an existing entry and edit the mood type or notes                     | Changes are saved and updated in the dashboard and history views                                        | Pass        |
+| User can delete a mood entry               | Select a mood entry and delete it                                          | Entry is removed from the dashboard and history views                                                   | Pass        |
+| Calendar displays color-coded mood data    | Navigate to the dashboard with logged mood entries                         | The calendar displays the most common mood for each day, color-coded appropriately                       | Pass        |
+| Notification settings can be toggled       | Enable or disable email notifications from the settings page               | Notifications toggle is saved, and behavior reflects the preference                                     | Pass        |
+| Email reminders are sent to opted-in users | Enable notifications and wait for the reminder email                      | Reminder email is received at the expected time                                                         | Pass        |
+| Dark mode toggles successfully             | Enable or disable dark mode from the settings page                         | Website updates its theme to dark or light based on the toggle                                          | Pass        |
+| Password change functionality              | Change password using the "Change Password" form                           | Password is updated, and the user can log in with the new password                                       | Pass        |
+| Profile update functionality               | Update the username or email on the profile page                           | Changes are saved and reflected on the user's account                                                   | Pass        |
+
+---
+
+### Responsiveness Tests
+
+| **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
+|--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
+| Layout consistency on different resolutions | Use browser DevTools to test layouts on various screen sizes               | Layout remains functional and visually appealing on all screen sizes                                    | Pass        |
+| Mobile responsiveness                      | Test the site on a mobile device                                           | Layout adjusts to fit the smaller screen without losing usability                                       | Pass        |
+| Navbar collapses into a hamburger menu     | Resize the browser to simulate a smaller screen                            | Navbar collapses into a responsive hamburger menu                                                       | Pass        |
+
+---
+
+### Accessibility Tests
+
+| **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
+|--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
+| Keyboard navigation                        | Use the Tab key to navigate through all interactive elements               | All focusable elements are accessible, and navigation order is logical                                  | Pass        |
+| Forms display validation messages          | Submit forms with invalid or empty required fields                         | Validation messages appear clearly for all issues (e.g., invalid email, missing required fields)        | Pass        |
+| Error message clarity                      | Trigger an error (e.g., incorrect login or invalid form submission)         | Error message clearly explains the issue and how to fix it                                              | Pass        |
+| Large text mode compatibility              | Increase the font size in browser settings                                 | Content scales appropriately without breaking the layout                                                | Pass        |
+
+---
+
+### User Flow Tests
+
+| **Test**                                   | **Action**                                                                 | **Expected Result**                                                                                      | **Outcome** |
+|--------------------------------------------|----------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|-------------|
+| New user registration                      | Complete the sign-up form and log in                                       | Account is successfully created, and user is redirected to the dashboard                                | Pass        |
+| Existing user login                        | Log in using valid credentials                                             | User is logged in and redirected to the dashboard                                                       | Pass        |
+| Incorrect login displays error             | Attempt to log in with invalid credentials                                 | Error message is displayed prompting the user to check their details                                    | Pass        |
+| Logout redirects to the homepage           | Log out from the application                                               | User is redirected to the homepage                                                                      | Pass        |
+
+
 
 ### Validator testing
 
@@ -766,22 +812,20 @@ In addition to automated tests, manual testing was conducted to verify:
 
 Ensuring the security of user data and the application’s integrity is a top priority for Mood Tracker. This section outlines the measures implemented to protect sensitive information and secure the platform against potential vulnerabilities.
 
----
-
 ### **1. CSRF Protection**
 
   - Django’s built-in **CSRF (Cross-Site Request Forgery)** protection is enabled across all POST requests.
   - CSRF tokens are included in forms and validated on the server to prevent unauthorized actions.
   - Example: CSRF token was included in all forms, such as the `mood-entry` form:
 
-  ```
-  <form method="POST" class="mt-4">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary btn-block">Submit</button>
-        <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary w-45">Cancel</a>
-    </form>
-  ```
+    ```html
+    <form method="POST" class="mt-4">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" class="btn btn-primary btn-block">Submit</button>
+          <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary w-45">Cancel</a>
+      </form>
+    ```
 
 ---
 
@@ -847,6 +891,32 @@ Ensuring the security of user data and the application’s integrity is a top pr
 | [Jest](https://jestjs.io/)               | Unit testing JavaScript functions                                                                             |
 | [D3js](https://d3js.org/)                | Rendering the calendar                                                                              |
 | [RandomKeygen](https://randomkeygen.com/)| Generating secure random keys |
+
+### Backend Optimizations
+
+#### Database Query Efficiency:
+
+- **Optimization**: Utilized Django's ``select_related`` method to minimize redundant database queries for related models.
+
+- **Example**: When fetching user moods for the calendar and history views, related user objects are preloaded to avoid repeated queries.
+
+  ```python
+  moods = Mood.objects.select_related('user').filter(user=request.user)
+  ```
+
+### Frontend Optimizations
+
+#### Asynchronous Data Fetching:
+
+- **Optimization**: Used asynchronous JavaScript `fetch()` to load mood data for the calendar dynamically, ensuring the page loads quickly without waiting for the data.
+
+  ```javascript
+  fetch("/dashboard/mood-calendar/")
+      .then((response) => response.json())
+      .then((data) => {
+          // Render the calendar
+      });
+  ```
 
 ## **Deployment to Heroku**
 
