@@ -714,21 +714,47 @@ In addition to automated tests, manual testing was conducted to verify:
 
 #### HTML W3C Validator
 
+  ![Screenshot of W3C HTML validator showing no errors](docs/screnshot-validator-html-no-errors.png)
+
+  - No errors or warnings shown.
+  - Input in validation tool was done via direct text input, copied from the page's source code due to Django's template language not being recognized by W3C HTML Validator
+
 #### CSS W3C Validator
 
-![Screenshot of W3C CSS validator showing no errors](docs/validator-css.png)
+![Screenshot of W3C CSS validator showing no errors](docs/screenshot-validator-css.png)
 - No errors found.
+- <p>
+    <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        <img style="border:0;width:88px;height:31px"
+            src="http://jigsaw.w3.org/css-validator/images/vcss"
+            alt="Valid CSS!" />
+    </a>
+</p>
 
 #### JSHint
 
-- No errors shown.
+- No errors were shown, but the script responsible for the calendar uses external information from D3js, and causes an undefined variable.
 
-![Screenshot of JSHint result showing no warnings](docs/jsHint.png)
+- `mood_history.js`
 
-#### Lighthouse
+  ![Screenshot of JSHint result showing no warnings](docs/screenshot-jshint-history.png)
 
-- Lighthouse in devtools indicated a high accessibility score.
-- Performance scores varied minimally when analysing  the `mobile` or `desktop` versions.
+- `mood_calendar.js`
+
+  ![Screenshot of JSHint result showing no warnings](docs/screenshot-jshint-calendar.png)
+
+#### **Lighthouse**
+
+- Lighthouse in devtools indicated a high Accessibility, Best Practices and SEO scores.
+- Performance scores varied when analysing  the `mobile` or `desktop` versions. Although the website is clean, with almost no large pictures, the loading times for the JavaScript `scripts` were long, including D3.js, Bootstra and the custom ones.
+
+- **Mobile**
+
+  ![Screenshot of Lighthouse score results for mobile](docs/screenshot-lighthouse-mobile-dashboard.png)
+
+- **Desktop**
+
+  ![Screenshot of Lighthouse score results for desktop](docs/screenshot-lighthouse-desktop-dashboard.png)
 
 #### Browsers Tested
 

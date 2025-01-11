@@ -79,5 +79,5 @@ document.addEventListener("DOMContentLoaded", function () {
                     `translate(${(svg.attr("width") - bbox.width) / 2}, ${(svg.attr("height") - bbox.height) / 2})`
                 );
             });
-        })
+        });
 });
