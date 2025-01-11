@@ -669,32 +669,19 @@ This subsection links the project's core features to their respective automated 
   - Checked that opt-in users receive emails at the specified time.
 
 ---
-### **Running the Tests**
-
-#### **Python Tests**
-Run all Python tests using:
-```
-python manage.py test
-```
-This command runs tests for models, views, and forms to ensure backend functionality.
-
-#### **JavaScript Tests**
-Run JavaScript tests with Jest:
-```
-npx jest
-```
-
----
 
 ### **Test Results**
 
 #### **Automated Python Tests**
 - **Command**: `python manage.py test`
-- **Screenshot Placeholder**: Add a screenshot of the Python test output showing all tests passing.
+
+  ![Screenshot of terminal showing no failed test](docs/screenshot-test-python.png)
 
 #### **Automated JavaScript Tests**
 - **Command**: `npx jest`
-- **Screenshot Placeholder**: Add a screenshot of the Jest test output showing all JavaScript tests passing.
+
+  ![Screenshot of terminal showing no failed test](docs/screenshot-test-jest.png)
+
 
 #### **Edge Case Tests**
 - **Examples**:
