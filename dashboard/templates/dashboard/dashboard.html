@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
 Dashboard - Mood Tracker
@@ -6,36 +7,76 @@ Dashboard - Mood Tracker
 
 {% block content %}
 <div class="container my-4">
-    <h1 class="text-center">Welcome, {{ user.username }}!</h1>
-    <div class="text-center my-4">
-        <a href="{% url 'mood:mood_entry' %}" class="btn btn-success">Add Mood Entry</a>
-    </div>    
-    <p class="text-center">Here's an overview of your activity:</p>
-    <div class="row mt-4 d-flex justify-content-center">
-        <h2 class="text-center">Mood Calendar</h2>
-        <!-- Loop through the months and create a div for each -->
-        {% for month in months %}
-        <div class="calendar-container my-4">
-            <h3 class="text-center">{{ month|date:"F Y" }}</h3>
-            <div id="calendar-{{ month|date:"Ym" }}" class="calendar-div"></div>
+    <div class="row my-4 align-items-center text-center justify-content-center">
+        <!-- Image on the left, adjusted for mobile -->
+        <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+            <img src="{% static 'images/illustration-dashboard.png' %}" 
+                 alt="Illustration of a dashboard" 
+                 class="img-fluid" 
+                 style="max-width: 75%; height: auto;"> <!-- Restrict image size for mobile -->
         </div>
-        {% endfor %}
-        <div class="calendar-wrapper container my-4">
-            <div class="legend d-flex flex-wrap justify-content-center">
-                <div class="legend-item happy"></div> Happy
-                <div class="legend-item sad"></div> Sad
-                <div class="legend-item anxious"></div> Anxious
-                <div class="legend-item angry"></div> Angry
-                <div class="legend-item calm"></div> Calm
-                <div class="legend-item excited"></div> Excited
-                <div class="legend-item tired"></div> Tired
+        <!-- Welcome message -->
+        <div class="col-lg-6 col-12">
+            <h1>Welcome, {{ user.username }}!</h1>
+            <p>Here's an overview of your activity:</p>
+            <div class="my-3">
+                <a href="{% url 'mood:mood_entry' %}" class="btn btn-success btn-lg">Add Mood Entry</a>
             </div>
         </div>
-        <!-- Recent Mood Entries -->
-        <div class="col-md-6">
-            <h3 class="text-center">Recent Mood Entries</h3>
+    </div>
+
+    <!-- Calendar Section -->
+    <div class="row justify-content-center mt-4">
+        {% for month in months %}
+        <div class="col-lg-5 col-md-6 col-sm-8 col-12 mb-4 d-flex justify-content-center">
+            <div class="calendar-container w-100" style="max-width: 95%;"> <!-- Increased size for mobile -->
+                <h3 class="text-center">{{ month|date:"F Y" }}</h3>
+                <div id="calendar-{{ month|date:"Ym" }}" class="calendar-div"></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-wrapper container my-4">
+        <div class="legend">
+            <div class="legend-item">
+                <div class="happy"></div>
+                <span>Happy</span>
+            </div>
+            <div class="legend-item">
+                <div class="sad"></div>
+                <span>Sad</span>
+            </div>
+            <div class="legend-item">
+                <div class="anxious"></div>
+                <span>Anxious</span>
+            </div>
+            <div class="legend-item">
+                <div class="angry"></div>
+                <span>Angry</span>
+            </div>
+            <div class="legend-item">
+                <div class="calm"></div>
+                <span>Calm</span>
+            </div>
+            <div class="legend-item">
+                <div class="excited"></div>
+                <span>Excited</span>
+            </div>
+            <div class="legend-item">
+                <div class="tired"></div>
+                <span>Tired</span>
+            </div>
+        </div>
+    </div>    
+
+    <!-- Recent Mood Entries -->
+    <div class="row">
+        <div class="col-12 col-lg-8 mx-auto">
+            <h3 class="text-center mt-4 mb-4">Recent Mood Entries</h3>
             <ul class="list-group">
-                {% for mood in moods %}
+                {% for mood in moods|slice:":5" %} <!-- Show only the last 5 entries -->
                 <li class="list-group-item">
                     {{ mood.date }} - {{ mood.mood_type }}
                     {% if mood.note %}
@@ -51,6 +92,4 @@ Dashboard - Mood Tracker
 </div>
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
-
-
 {% endblock %}
