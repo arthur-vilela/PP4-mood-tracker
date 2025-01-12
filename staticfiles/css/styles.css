@@ -100,12 +100,22 @@
     /* Dark green text */
 }
 
+/*------------------------ Footer ------------------- */
+footer a {
+    color: #353535 !important;
+    font-size: xx-large;
+}
+
+footer a:hover {
+    color: #000000 !important;
+}
+
 /*----------------------- Homepage ------------------ */
 .profile-img {
     max-width: 100%;
 }
 
-/*----------------------- Homepage ------------------ */
+/*----------------------- Settings ------------------ */
 #settings-illustration {
     max-width: 75%; 
     height: auto;
