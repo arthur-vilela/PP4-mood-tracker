@@ -193,6 +193,19 @@ svg {
 }
 
 /*----------------------- Mood History ------------------ */
+
+#history-illustration {
+    max-width: 75%; 
+    height: auto;
+}
+
+.history-date{
+    min-width: 100px;
+}
+
+.badge {
+    min-width: 60px;
+}
 .badge.happy {
     background-color: #FFD700;
     color: #121212;
