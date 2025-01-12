@@ -89,7 +89,7 @@ The favicon reflects the project's core functionality: a calendar emoji, eluding
 ### **Home Page**
 First time users are brought to the home page where they have the option to Sign Up or Log In, if they are not already logged in. 
 
-![Screenshot of home page on mobile for unauthenticated users](docs/screenshot-mobile-add-mood.jpg)
+![Screenshot of home page on mobile for unauthenticated users](docs/screenshot-mobile-homepage.jpg)
 
 
 Authenticated users will see a "Add Mood Entry" button from the home page.
@@ -97,9 +97,19 @@ Authenticated users will see a "Add Mood Entry" button from the home page.
 
 
 ### **Mood Logging**
+
 Users can log daily moods along with optional notes and actions.
 
 ![Screenshot of add mood entry page on mobile](docs/screenshot-mobile-add-mood.jpg)
+
+![Screenshot of add mood entry page on mobile on dark mode](docs/screenshot-mobile-add-mood-dark.jpg)
+
+From the **Mood History** page, users can edit their previous entries.
+
+![Screenshot of edit mood entry page on mobile](docs/screenshot-mobile-edit-mood.jpg)
+
+![Screenshot of edit mood entry page on mobile on dark mode](docs/screenshot-mobile-edit-mood-dark.jpg)
+
 #### **Implementation**
 1. **Frontend**:
    - The mood entry page provides a user-friendly form where users can:
@@ -146,6 +156,8 @@ A calendar on the dashboard provides a color-coded overview of logged moods. Sin
 
   ![Screenshot of the dashboard on mobile](docs/screenshot-mobile-dashboard.jpg)
 
+  ![Screenshot of the dashboard on mobile on dark mode](docs/screenshot-mobile-dashboard-dark.jpg)
+
   ![Screenshot of the mood calendar](docs/screenshot-mood-calendar.jpg)
 
 #### **Implementation**
@@ -168,6 +180,8 @@ A calendar on the dashboard provides a color-coded overview of logged moods. Sin
 Users can revisit older entries through an accordion-style mood history page.
 
   ![Screenshot of add mood entry page on mobile](docs/screenshot-mobile-mood-history.jpg)
+
+  ![Screenshot of add mood entry page on mobile on dark mode](docs/screenshot-mobile-mood-history-dark.jpg)
 
 #### **Implementation**
 1. **Frontend**:
@@ -207,10 +221,15 @@ In the **Settings** page, a toggle allows users to switch between light and dark
 
 ### **Daily Reminder Email Feature**
 
+  ![Screenshot of a daily email reminder](docs/screenshot-email-reminder.jpg)
+
+
 #### **Overview**
 The Daily Reminder Email feature ensures that users who opt-in receive a notification email at 20:00 UTC, reminding them to log their mood in the app. This feature is designed to help users maintain consistent mood tracking and make the most of the app's functionality.
 
   ![Screenshot of the settings page](docs/screenshot-mobile-settings.jpg)
+
+  ![Screenshot of the settings page on dark mode](docs/screenshot-mobile-settings-dark.jpg)
 
 ---
 
@@ -251,7 +270,11 @@ From the **Settings** page, users can click on a link to **change password** or 
 
   ![Screenshot of password change page on mobile](docs/screenshot-mobile-change-password.jpg)
 
+  ![Screenshot of password change page on mobile on dark mode](docs/screenshot-mobile-change-password-dark.jpg)
+
   ![Screenshot of user update page on mobile](docs/screenshot-mobile-edit-profile.jpg)
+
+  ![Screenshot of user update page on mobile on dark mode](docs/screenshot-mobile-edit-profile-dark.jpg)
 
 
 #### **Implementation**
@@ -976,3 +999,5 @@ The application will be accessible on port `8000` at:
 [Stack Overflow](https://stackoverflow.com/) | Solved several doubts regarding Django views, Bootstrap customization, and testing.
 
 [ChatGPT](https://chatgpt.com/) | Helped me understand several terminal outputs and debug messages, beyond helping with Readme styling and organization.
+
+[Start Bootstrap](https://startbootstrap.com/theme/personal) | The home page layout was based on this **Start Bootstrap** template.
