@@ -14,6 +14,13 @@ from .forms import StyledPasswordChangeForm
 
 @login_required
 def logout_confirm_view(request):
+    """
+    Renders the Logout Confirmation page.
+    Allows the user to confirm and process the logout action.
+
+    **Template:**
+    :template:`account/logout_confirm.html`.
+    """
     if request.method == "POST":
         logout(request)
         return redirect("/")
@@ -22,6 +29,17 @@ def logout_confirm_view(request):
 
 @method_decorator(login_required, name='dispatch')
 class ProfileUpdateView(UpdateView):
+    """
+    Renders the Profile Update page.
+    Allows the user to update their username and email.
+
+    **Context**
+    ``form``
+        Instance of :form:`users.ProfileUpdateForm`.
+
+    **Template:**
+    :template:`users/profile_update.html`.
+    """
     model = User
     form_class = ProfileUpdateForm
     template_name = "users/profile_update.html"
@@ -31,6 +49,17 @@ class ProfileUpdateView(UpdateView):
 
 @method_decorator(login_required, name='dispatch')
 class CustomPasswordChangeView(PasswordChangeView):
+    """
+    Renders the Password Change page.
+    Allows the user to securely update their password.
+
+    **Context**
+    ``form``
+        Instance of :form:`users.StyledPasswordChangeForm`.
+
+    **Template:**
+    :template:`users/password_change.html`.
+    """
     form_class = StyledPasswordChangeForm
     template_name = "users/password_change.html"
     success_url = reverse_lazy("dashboard:dashboard_home") 

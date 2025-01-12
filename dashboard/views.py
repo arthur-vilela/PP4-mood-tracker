@@ -21,6 +21,19 @@ import calendar
 # Create your views here.
 @login_required
 def dashboard_view(request):
+    """
+    Renders the Dashboard page.
+    Displays all mood entries for the logged-in user and provides a monthly breakdown of entries.
+    
+    **Context**
+    ``moods``
+        Queryset of all mood entries for the logged-in user, ordered by the most recent date.
+    ``months``
+        List of unique months with mood entries.
+
+    **Template:**
+    :template:`dashboard/dashboard.html`.
+    """
     # Get all moods for the logged-in user
     moods = Mood.objects.filter(user=request.user).select_related('user').order_by('-date')
 
@@ -39,7 +52,16 @@ def dashboard_view(request):
 
 @login_required
 def mood_calendar_view(request):
-    """View to generate data for mood calendar."""
+    """
+    Generates and returns JSON data for the Mood Calendar.
+    The calendar is dynamically rendered using D3.js on the frontend.
+    
+    **Context**
+    JSON response containing date-to-mood mapping, where each day is color-coded based on the most frequent mood type.
+
+    **Template:**
+    This view does not render a template. It returns a JSON response.
+    """
     try:
         moods = Mood.objects.filter(user=request.user)
         mood_by_date = {}
@@ -60,14 +82,36 @@ def mood_calendar_view(request):
 
 @login_required
 def mood_history_view(request):
-    """View to display the user's mood history."""
+    """
+    Renders the Mood History page.
+    Allows users to view a chronological list of their mood entries.
+
+    **Context**
+    ``moods``
+        Queryset of all mood entries for the logged-in user, ordered by the most recent date.
+
+    **Template:**
+    :template:`dashboard/mood_history.html`.
+    """
     moods = Mood.objects.filter(user=request.user).select_related('user').order_by('-date')  # Fetch moods in descending order of date
     return render(request, 'dashboard/mood_history.html', {'moods': moods})
 
 
 @login_required
 def settings_view(request):
-    """View to manage user settings."""
+    """
+    Renders the Settings page.
+    Allows users to configure notification preferences and enable or disable dark mode.
+
+    **Context**
+    ``notification_settings``
+        The notification settings for the logged-in user.
+    ``preferences``
+        The user preferences (e.g., dark mode) for the logged-in user.
+
+    **Template:**
+    :template:`dashboard/settings.html`.
+    """
     try:
         notification_settings = NotificationSettings.objects.select_related('user').get(user=request.user)
     except NotificationSettings.DoesNotExist:
@@ -99,7 +143,21 @@ def settings_view(request):
 @csrf_exempt
 @require_POST
 def trigger_send_reminders(request):
-    """View to trigger the send_reminders function."""
+    """
+    Trigger the Daily Reminder Email function.
+    This view is designed for automation tools (e.g., Heroku Scheduler) to invoke the email reminder functionality.
+
+    **Request Headers**
+    ``X-SECRET-TOKEN``
+        A secret token required to authenticate the request.
+
+    **Response**
+    - Success: JSON response with a success message.
+    - Failure: JSON response with an error message and a 500 status code.
+
+    **Template:**
+    This view does not render a template. It returns a JSON response.
+    """
     # Verify the request contains the secret token
     secret_token = request.headers.get("X-SECRET-TOKEN")
     expected_token = os.getenv("SECRET_TOKEN") 
@@ -117,6 +175,17 @@ def trigger_send_reminders(request):
 
 @login_required
 def edit_mood_view(request, pk):
+    """
+    Renders the Edit Mood Entry page.
+    Allows the user to update an existing mood entry.
+
+    **Context**
+    ``form``
+        Instance of :form:`dashboard.MoodForm` pre-filled with the mood entry data.
+
+    **Template:**
+    :template:`dashboard/edit_mood.html`.
+    """
     mood = get_object_or_404(Mood.objects.select_related('user'), pk=pk, user=request.user)
     if request.method == "POST":
         form = MoodForm(request.POST, instance=mood)
@@ -133,6 +202,16 @@ def edit_mood_view(request, pk):
 
 @login_required
 def delete_mood_view(request, pk):
+    """
+    Handles deletion of a Mood Entry.
+    Allows the user to delete a specific mood entry.
+
+    **Context**
+    No additional context is passed to the template.
+
+    **Template:**
+    This view does not render a template. It redirects to the Mood History page.
+    """
     mood = get_object_or_404(Mood.objects.select_related('user'), pk=pk, user=request.user)
     mood.delete()
     messages.success(request, "Mood entry deleted successfully!")

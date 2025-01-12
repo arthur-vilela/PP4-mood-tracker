@@ -7,6 +7,17 @@ from .forms import MoodEntryForm
 
 @login_required
 def mood_entry_view(request):
+    """
+    Renders the Mood Entry page.
+    Allows the logged-in user to add a new mood entry.
+
+    **Context**
+    ``form``
+        Instance of :form:`mood.MoodEntryForm`.
+
+    **Template:**
+    :template:`mood/mood_entry.html`.
+    """
     if request.method == "POST":
         form = MoodEntryForm(request.POST)
         if form.is_valid():
