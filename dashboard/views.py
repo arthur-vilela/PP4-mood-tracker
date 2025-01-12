@@ -48,7 +48,9 @@ def dashboard_view(request):
     else:
         months = []
 
-    return render(request, "dashboard/dashboard.html", {"moods": moods, "months": months})
+    dark_theme = request.session.get('dark_theme', False)
+    
+    return render(request, "dashboard/dashboard.html", {"moods": moods, "months": months, "dark_theme": dark_theme,})
 
 @login_required
 def mood_calendar_view(request):

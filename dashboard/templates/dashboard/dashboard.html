@@ -10,10 +10,17 @@ Dashboard - Mood Tracker
     <div class="row my-4 align-items-center text-center justify-content-center">
         <!-- Image on the left, adjusted for mobile -->
         <div class="col-lg-3 col-12 mb-4 mb-lg-0">
+            {% if dark_theme %}
+            <img src="{% static 'images/illustration-dashboard-dark.png' %}" 
+                 alt="Illustration of a dashboard in dark mode" 
+                 class="img-fluid" 
+                 style="max-width: 75%; height: auto;"> <!-- Restrict image size for mobile -->
+            {% else %}
             <img src="{% static 'images/illustration-dashboard.png' %}" 
                  alt="Illustration of a dashboard" 
                  class="img-fluid" 
                  style="max-width: 75%; height: auto;"> <!-- Restrict image size for mobile -->
+            {% endif %}
         </div>
         <!-- Welcome message -->
         <div class="col-lg-6 col-12">
