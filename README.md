@@ -1,5 +1,9 @@
 # **Mood Tracker**
 
+> ## Live website: https://pp4-mood-tracker-20082cf10f44.herokuapp.com/
+
+![Screenshot of home page on desktop for unauthenticated users](docs/screenshot-desktop-home-page.png)
+
 ## **Description**
 A Django-based web application for tracking moods, allowing users to record their emotional state, actions, and analyze patterns over time.
 ### Overview
@@ -179,9 +183,12 @@ A calendar on the dashboard provides a color-coded overview of logged moods. Sin
 ### **History Review**
 Users can revisit older entries through an accordion-style mood history page.
 
-  ![Screenshot of add mood entry page on mobile](docs/screenshot-mobile-mood-history.jpg)
+  ![Screenshot of add mood history page on mobile](docs/screenshot-mobile-mood-history.jpg)
 
-  ![Screenshot of add mood entry page on mobile on dark mode](docs/screenshot-mobile-mood-history-dark.jpg)
+  ![Screenshot of add mood history page on mobile on dark mode](docs/screenshot-mobile-mood-history-dark.jpg)
+
+  ![Screenshot of add mood history page on desktop](docs/screenshot-desktop-mood-history.png)
+
 
 #### **Implementation**
 1. **Frontend**:
@@ -289,6 +296,46 @@ From the **Settings** page, users can click on a link to **change password** or 
 3. **Integration**:
    - Notifications confirm successful updates to the user's profile.
    - The updated information is immediately reflected in the user session.
+
+
+### **Admin Page**
+
+The project utilizes Django's built-in Admin Page for efficient management of users and mood entries. This powerful tool provides an intuitive interface for superusers, allowing them to oversee and control key aspects of the application.
+
+**Key Features:**
+  
+  Access Control:
+
+  - Only a superuser can access the Admin Page, ensuring secure management of data.
+  - Superusers authenticate with a username and password.
+  
+  User Management:
+
+  - View, delete, or deactivate users.
+  - Passwords remain secure; superusers cannot view or edit them.
+
+  Mood Entry Management:
+
+  - Add, edit, or delete mood entries.
+  - Filter by date, user, or mood type, and order entries for better organization.
+
+  Filter and Search:
+
+  - Built-in filters and search capabilities make it easy to locate specific users or entries.
+   
+  Customization:
+
+  - Key fields like user, mood type, and date are displayed in the list view.
+  - Additional admin features include search and filter options for mood type, date, and notes.
+  
+  Security:
+  
+  - Accessible only via /admin/, protected by Django's authentication system.
+  - Sensitive operations are logged for transparency.
+
+  ![Screenshot of admin page on desktop](docs/screenshot-admin.png)
+
+  ![Screenshot of admin page on desktop](docs/screenshot-admin-users.png)
 
 ---
 
