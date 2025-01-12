@@ -9,8 +9,7 @@
         <div class="col-lg-3 col-12 text-center mb-3 mb-lg-0">
             <img src="{% static 'images/illustration-settings.png' %}" 
                  alt="Illustration of settings" 
-                 class="img-fluid" 
-                 style="max-width: 75%; height: auto;">
+                 class="img-fluid" id="settings-illustration">
         </div>
         <!-- Title -->
         <div class="col-lg-4 col-12 text-center text-lg-start">
@@ -21,15 +20,6 @@
     <!-- Row for the form -->
     <div class="row justify-content-center">
         <div class="col-lg-6 col-12">
-            <!-- Success Message -->
-            {% if messages %}
-                <div class="alert alert-success" role="alert">
-                    {% for message in messages %}
-                        {{ message }}
-                    {% endfor %}
-                </div>
-            {% endif %}
-
             <!-- Form -->
             <form method="post" class="p-4 border rounded shadow-sm {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
                 {% csrf_token %}

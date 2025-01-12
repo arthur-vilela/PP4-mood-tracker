@@ -40,34 +40,34 @@
 }
 
 
-/* Form */
+/* Dark theme form adjustments */
 .dark-theme form {
-    /* background-color: #495057 !important; */
-    color: #f8f9fa !important;
-    /* border: 1px solid #6c757d; */
+    color: #ffffff !important; /* Ensure form text is white */
+}
+
+.dark-theme form .form-control {
+    background-color: #495057; /* Darker input field background */
+    color: #ffffff !important; /* White text inside input fields */
+    border: 1px solid #adb5bd; /* Light gray border */
+}
+
+.dark-theme form .form-control::placeholder {
+    color: #ced4da; /* Light gray placeholder text for better contrast */
 }
 
 .dark-theme form .form-control:focus {
-    border-color: #adb5bd;
-    box-shadow: 0 0 0 0.2rem rgba(173, 181, 189, 0.25);
+    border-color: #ffffff; /* White border on focus */
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25); /* Subtle white glow */
 }
 
-.dark-theme form input,
-.dark-theme form select,
-.dark-theme form textarea {
-    background-color: #6c757d;
-    /* Darker input fields */
-    color: #f8f9fa;
-    border: 1px solid #495057;
+.dark-theme form label {
+    color: #ffffff; /* Ensure labels are white */
 }
 
-.dark-theme form input:focus,
-.dark-theme form select:focus,
-.dark-theme form textarea:focus {
-    border-color: #adb5bd;
-    /* Lighter gray on focus */
-    box-shadow: 0 0 0 0.2rem rgba(173, 181, 189, 0.25);
+.dark-theme form .form-text {
+    color: #ced4da; /* Helper text below inputs, styled in light gray */
 }
+
 
 /* Alert Messages */
 .alert-danger {
