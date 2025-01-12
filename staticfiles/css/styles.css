@@ -91,6 +91,12 @@
     /* Dark green text */
 }
 
+/*----------------------- Homepage ------------------ */
+.profile-img {
+    max-width: 100%;
+}
+
+
 /*----------------------- Dashboard ------------------ */
 .calendar-month {
     text-align: center;
