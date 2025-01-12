@@ -28,6 +28,15 @@
     color: #f8f9fa !important;
 }
 
+.dark-theme footer a {
+    color: #fafafa !important;
+    font-size: xx-large;
+}
+
+.dark-theme footer a:hover {
+    color: #c0c0c0 !important;
+}
+
 /* Buttons */
 .dark-theme .btn-primary {
     background-color: #375a7f;

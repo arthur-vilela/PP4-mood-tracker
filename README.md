@@ -86,6 +86,16 @@ The favicon reflects the project's core functionality: a calendar emoji, eluding
 
 ## **Features**
 
+### **Home Page**
+First time users are brought to the home page where they have the option to Sign Up or Log In, if they are not already logged in. 
+
+![Screenshot of home page on mobile for unauthenticated users](docs/screenshot-mobile-add-mood.jpg)
+
+
+Authenticated users will see a "Add Mood Entry" button from the home page.
+
+
+
 ### **Mood Logging**
 Users can log daily moods along with optional notes and actions.
 

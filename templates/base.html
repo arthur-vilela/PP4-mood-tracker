@@ -18,6 +18,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon/favicon-16x16.png' %}">
     <link rel="manifest" href="{% static 'favicon/site.webmanifest' %}">
+    <!-- Fontawesome -->
+    <script src="https://kit.fontawesome.com/7ac6e7be0c.js" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="{% static 'js/mood_history.js' %}"></script>
     <script src="{% static 'js/mood_calendar.js' %}"></script>
@@ -78,6 +80,7 @@
         {% endblock %}
     </main>
     <footer class="text-center py-3 {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
+        <a href="https://github.com/arthur-vilela/PP4-mood-tracker"><i class="fa-brands fa-github"></i></a>
         <p class="mb-0">&copy; 2025 Mood Tracker</p>
     </footer>
     <!-- Bootstrap Bundle JS -->
