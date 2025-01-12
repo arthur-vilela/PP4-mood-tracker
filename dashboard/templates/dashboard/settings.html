@@ -1,60 +1,79 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container my-4">
-    <h1 class="text-center mb-4">User Settings</h1>
-
-    <!-- Success Message -->
-    {% if messages %}
-        <div class="alert alert-success" role="alert">
-            {% for message in messages %}
-                {{ message }}
-            {% endfor %}
+    <!-- Row for the image and the title -->
+    <div class="row align-items-center justify-content-center mb-4">
+        <!-- Image -->
+        <div class="col-lg-3 col-12 text-center mb-3 mb-lg-0">
+            <img src="{% static 'images/illustration-settings.png' %}" 
+                 alt="Illustration of settings" 
+                 class="img-fluid" 
+                 style="max-width: 75%; height: auto;">
         </div>
-    {% endif %}
-
-     
-    <form method="post" class="p-4 border rounded shadow-sm {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
-        {% csrf_token %}
-
-        <!-- Account Settings -->
-        <div class="mb-4">
-            <h2 class="h5 mb-3">Account Settings</h2>
-            <ul class="list-unstyled">
-                <li>
-                    <a href="{% url 'users:change_password' %}" class="btn btn-link">Change Password</a>
-                </li>
-                <li>
-                    <a href="{% url 'users:edit_profile' %}" class="btn btn-link">Update Profile</a>
-                </li>
-            </ul>
+        <!-- Title -->
+        <div class="col-lg-4 col-12 text-center text-lg-start">
+            <h1>User Settings</h1>
         </div>
+    </div>
 
-        <!-- Notification Settings -->
-        <div class="mb-4">
-            <h2 class="h5 mb-3">Notification Settings</h2>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="notify_by_email" name="notify_by_email" 
-                       {% if notification_settings.notify_by_email %}checked{% endif %}>
-                <label class="form-check-label" for="notify_by_email">Notify by email</label>
-            </div>              
-        </div>
+    <!-- Row for the form -->
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-12">
+            <!-- Success Message -->
+            {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-        <!-- Dark Theme -->
-        <div class="mb-4">
-            <h2 class="h5 mb-3">Theme Settings</h2>
-            <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="dark_theme" name="dark_theme" 
-                       {% if preferences.dark_mode_enabled %}checked{% endif %}>
-                <label class="form-check-label" for="dark_theme">Enable Dark Theme</label>
-            </div>
-        </div>
+            <!-- Form -->
+            <form method="post" class="p-4 border rounded shadow-sm {% if request.session.dark_theme %}bg-dark text-light{% else %}bg-light text-dark{% endif %}">
+                {% csrf_token %}
 
-        <!-- Submit Button -->
-        <div class="d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary">Save Settings</button>
-            <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary">Cancel</a>
+                <!-- Account Settings -->
+                <div class="mb-4">
+                    <h2 class="h5 mb-3">Account Settings</h2>
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'users:change_password' %}" class="btn btn-link">Change Password</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'users:edit_profile' %}" class="btn btn-link">Update Profile</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Notification Settings -->
+                <div class="mb-4">
+                    <h2 class="h5 mb-3">Notification Settings</h2>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="notify_by_email" name="notify_by_email" 
+                               {% if notification_settings.notify_by_email %}checked{% endif %}>
+                        <label class="form-check-label" for="notify_by_email">Notify by email</label>
+                    </div>
+                </div>
+
+                <!-- Dark Theme -->
+                <div class="mb-4">
+                    <h2 class="h5 mb-3">Theme Settings</h2>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="dark_theme" name="dark_theme" 
+                               {% if preferences.dark_mode_enabled %}checked{% endif %}>
+                        <label class="form-check-label" for="dark_theme">Enable Dark Theme</label>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-flex justify-content-start">
+                    <button type="submit" class="btn btn-primary me-2">Save Settings</button>
+                    <a href="{% url 'dashboard:dashboard_home' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 {% endblock %}

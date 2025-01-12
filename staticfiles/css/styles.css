@@ -96,6 +96,11 @@
     max-width: 100%;
 }
 
+/*----------------------- Homepage ------------------ */
+#settings-illustration {
+    max-width: 75%; 
+    height: auto;
+}
 
 /*----------------------- Dashboard ------------------ */
 .calendar-month {
