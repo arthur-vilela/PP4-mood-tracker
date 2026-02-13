@@ -3,7 +3,7 @@ cryptography>=3.3.2
 crispy-bootstrap5==2024.10
 decouple==0.0.7
 dj-database-url==2.3.0
-Django==5.2.9
+Django==5.2.11
 django-allauth==65.13.0
 django-crispy-forms==2.3
 django-summernote==0.8.20.0
