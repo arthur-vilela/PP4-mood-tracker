@@ -35,7 +35,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "True").lower() in ['true', '1', 'yes']
 
-ALLOWED_HOSTS = ['8000-arthurvilel-pp4moodtrac-kqq7bwws0nd.ws.codeinstitute-ide.net', 'localhost', '127.0.0.1', '.herokuapp.com']
+ALLOWED_HOSTS = ['8000-arthurvilel-pp4moodtrac-kqq7bwws0nd.ws.codeinstitute-ide.net', 'localhost', '127.0.0.1', '.herokuapp.com', '.onrender.com']
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -120,7 +120,8 @@ DATABASES = {
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net/",
-    "https://*.herokuapp.com"
+    "https://*.herokuapp.com",
+    "https://*.onrender.com"
 ]
 
 # Password validation
@@ -148,7 +149,12 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "optional"
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# Without email credentials (e.g. on Render's free tier, which blocks SMTP)
+# emails are printed to the server log instead of being sent
+if os.getenv("EMAIL_USER"):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
