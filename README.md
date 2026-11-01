@@ -863,7 +863,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
 
   - The `SECRET_KEY` is securely stored in an environment variable and is never exposed in the project repository.
   - The application relies on this key for cryptographic operations.
-  - The `SECRET_KEY` was added to the environment in deployment via Heroku Config Vars.
+  - The `SECRET_KEY` was added to the environment in deployment via Render environment variables.
 
 ---
 
@@ -872,7 +872,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
   - Sensitive information such as email credentials (`EMAIL_USER` and `EMAIL_PASSWORD`), database configuration, and the `SECRET_KEY` is stored in environment variables.
   - These variables are loaded at runtime and are not included in the source code.
   - `.env` or `env.py` files containing environmental variables are used locally and securely excluded from version control.
-  - The variables in those files were added to the environment in deployment via Heroku Config Vars.
+  - The variables in those files were added to the environment in deployment via Render environment variables.
   - Sensitive files (e.g., `.env`, `env.py`) are excluded from the Git repository using `.gitignore`.
   - The repository contains no hardcoded credentials or keys.
 
@@ -880,7 +880,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
 
 ### **4. HTTPS and Secure Connections**
 
-  - The application is deployed on Heroku with **HTTPS enforced** for all connections.
+  - The application is deployed on Render with **HTTPS enforced** for all connections.
   - Secure transmission ensures that user data is encrypted during communication between the client and server.
     ```
     https://pp4-mood-tracker-20082cf10f44.herokuapp.com/
@@ -940,7 +940,8 @@ Below are the known bugs and issues encountered during the project development, 
 | CSS                                                 | Style and add layout to the project.                                                                          |
 | JavaScript                                          | Make the website interactive.                                                                                 |
 | Django                                              | A Python-based web framework used to develop the backend, manage server-side logic, and handle routing.       |
-| [Heroku](https://www.heroku.com/)                   | Cloud platform used for deploying, managing, and hosting the live version of the website.                     |
+| [Render](https://render.com/)                       | Cloud platform used for deploying, managing, and hosting the live version of the website.                     |
+| [Neon](https://neon.com/)                           | Hosted PostgreSQL database used in production.                                                                |
 | [GitHub](https://github.com/)                       | Version control platform used to store the project’s repository, collaborate on code, and manage deployments. |  
 | [dbdiagram.io](https://dbdiagram.io/home)           | ERD creation                                                                                                  |
 | [Jest](https://jestjs.io/)                          | Unit testing JavaScript functions                                                                             |
@@ -976,38 +977,49 @@ Below are the known bugs and issues encountered during the project development, 
       });
   ```
 
-## **Deployment to Heroku**
+## **Deployment to Render**
 
- Go to Heroku.com and implement the following steps in this order:
- 1. On the home page, click 'New' and in the dropdown, click on 'Create a new app'.
- 2. Add app name (This name must be unique, and have all lower case letters. Also use minus/dash signs instead of spaces.)
- 3. Select Region (Most likely to be Europe)
- 4. Click the button that says 'Create App' and name the app. Follow instructions on the screen.
- 5. Click on the Deploy tab near the top of the screen.
- 6. Where is says Deployment Method click on Github.
- 7. Below that, search for your repo name and add that.
- 8. Click connect to the app.
+The app runs on a free [Render](https://render.com/) web service, with a free PostgreSQL database from [Neon](https://neon.com/).
 
- Before clicking below on enable automatic deployment do the following:
- 1. Click on the settings tab
- 2. Click on reveal config vars.
- 3. Add in your variables from your env. files as the key-value pairs.
- 4. Go back and click on the Deploy tab. 
- 
- Before the app can be connected, push the following new files below to the repository. Go back in the terminal in your coding environment and add the following:
- 1. git status
- 2. git add requirements.txt
- 3. git commit -m "Add requirements.txt file"
- 4. git add a Procfile (web: gunicorn _projectname_.wsgi)
- 1. git commit -m "Add Procfile"
- 2. git push
+### 1. Create the database on Neon
+1. Sign up at Neon and create a new project (choose the region closest to your Render region, e.g. Frankfurt).
+2. On the project dashboard, click **Connect** and copy the connection string (it starts with `postgresql://`).
 
- Head back over to Heroku where the Deploy tab is.
- 1. Click Deploy Branch. (Should be a main or master branch)
- 2. Heroku will receive code from Github and build app with the required packages. Hopefully once done the 'App has successfully been deployed message below' will appear.. 
- 3. Once you know deployment is successful then click 'Enable Automatic Deploys'
- 4. Click 'View' to launch the new app.
- 5. Link to deployed site is: https://pp4-mood-tracker-9f61d134c09f.herokuapp.com/
+### 2. Create the web service on Render
+1. Sign up at Render with your GitHub account.
+2. Click **New** > **Web Service** and select this repository.
+3. Fill in the settings:
+   - **Language:** Python 3
+   - **Branch:** main
+   - **Region:** Frankfurt (EU Central)
+   - **Build Command:** `bash build.sh`
+   - **Start Command:** `gunicorn moodtracker.wsgi`
+   - **Instance Type:** Free
+4. Add the environment variables:
+
+| Key | Value |
+|-----|-------|
+| `PYTHON_VERSION` | `3.12.8` |
+| `DATABASE_URL` | The Neon connection string |
+| `SECRET_KEY` | A long random string |
+| `DEBUG` | `False` |
+| `SITE_URL` | The address of the deployed site, e.g. `https://pp4-mood-tracker.onrender.com/` |
+| `SECRET_TOKEN` | A random string, used by the daily reminder workflow |
+| `DEMO_PASSWORD` | Password for the demo account |
+
+5. Click **Deploy Web Service**. `build.sh` installs the requirements, collects the static files, runs the migrations and creates the demo account.
+
+### 3. Daily reminders
+- The GitHub Actions workflow in `.github/workflows/send_reminders.yml` calls the reminder endpoint every evening.
+- In the repository settings on GitHub, add `SITE_URL` under **Secrets and variables** > **Actions** > **Variables**, and `SECRET_TOKEN` under **Secrets**, with the same values as on Render.
+- Render's free tier blocks outgoing SMTP, so without `EMAIL_USER` and `EMAIL_PASSWORD` the emails are printed to the Render log instead of being sent.
+
+### Demo account
+- The `create_demo_user` command creates the user `demo` with about two months of sample mood entries, using the password in `DEMO_PASSWORD`.
+- The account is reset on every deploy. To reset it manually, click **Manual Deploy** > **Deploy latest commit** on Render.
+
+### Notes
+- Free Render services go to sleep after 15 minutes without traffic, so the first visit after a while can take up to a minute to load.
 
 ## **Setup**
 
