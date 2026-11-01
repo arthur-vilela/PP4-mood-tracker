@@ -1,6 +1,6 @@
 # **Mood Tracker**
 
-> ## Live website: https://pp4-mood-tracker-20082cf10f44.herokuapp.com/
+> ## Live website: https://pp4-mood-tracker.onrender.com/
 
 ![Screenshot of home page on desktop for unauthenticated users](docs/screenshot-desktop-home-page.png)
 
@@ -883,7 +883,7 @@ Ensuring the security of user data and the application’s integrity is a top pr
   - The application is deployed on Render with **HTTPS enforced** for all connections.
   - Secure transmission ensures that user data is encrypted during communication between the client and server.
     ```
-    https://pp4-mood-tracker-20082cf10f44.herokuapp.com/
+    https://pp4-mood-tracker.onrender.com/
     ```
 
 ---
