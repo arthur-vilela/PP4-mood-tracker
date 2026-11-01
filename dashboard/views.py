@@ -163,7 +163,9 @@ def trigger_send_reminders(request):
     # Verify the request contains the secret token
     secret_token = request.headers.get("X-SECRET-TOKEN")
     expected_token = os.getenv("SECRET_TOKEN") 
-    if secret_token != expected_token:
+    # Reject everything if SECRET_TOKEN isn't set, otherwise a request
+    # without the header would match the missing token
+    if not expected_token or secret_token != expected_token:
         return HttpResponseForbidden("Invalid secret token")
 
     # Trigger the send_reminders function

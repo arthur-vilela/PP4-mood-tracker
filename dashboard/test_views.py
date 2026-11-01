@@ -1,3 +1,5 @@
+import os
+from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -111,3 +113,25 @@ class NotificationSettingsViewTest(TestCase):
         # Fetch updated settings from the database
         notification_settings = NotificationSettings.objects.get(user=self.user)
         self.assertTrue(notification_settings.notify_by_email)
+
+
+class SendRemindersViewTest(TestCase):
+    def setUp(self):
+        self.url = reverse("dashboard:trigger_send_reminders")
+
+    @patch.dict(os.environ, {"SECRET_TOKEN": "test-token"})
+    def test_send_reminders_with_valid_token(self):
+        response = self.client.post(self.url, headers={"X-Secret-Token": "test-token"})
+        self.assertEqual(response.status_code, 200)
+
+    @patch.dict(os.environ, {"SECRET_TOKEN": "test-token"})
+    def test_send_reminders_with_invalid_token(self):
+        response = self.client.post(self.url, headers={"X-Secret-Token": "wrong-token"})
+        self.assertEqual(response.status_code, 403)
+
+    def test_send_reminders_without_secret_token_set(self):
+        # Requests must be rejected when SECRET_TOKEN is missing on the server
+        with patch.dict(os.environ):
+            os.environ.pop("SECRET_TOKEN", None)
+            response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 403)
