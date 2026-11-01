@@ -7,9 +7,11 @@ on:
 
 jobs:
   send-reminders:
+    # Only runs once the SITE_URL repository variable is set
+    if: ${{ vars.SITE_URL != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Send reminders
         run: |
-          curl -X POST https://pp4-mood-tracker-20082cf10f44.herokuapp.com/dashboard/send-reminders/ \
+          curl -X POST ${{ vars.SITE_URL }}dashboard/send-reminders/ \
           -H "X-SECRET-TOKEN: ${{ secrets.SECRET_TOKEN }}"

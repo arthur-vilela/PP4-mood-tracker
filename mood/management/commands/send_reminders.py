@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         users = NotificationSettings.objects.filter(notify_by_email=True)
-        homepage_url = "https://pp4-mood-tracker-20082cf10f44.herokuapp.com/"
+        homepage_url = os.getenv("SITE_URL", "http://localhost:8000/")
 
         for user_settings in users:
             user = user_settings.user
